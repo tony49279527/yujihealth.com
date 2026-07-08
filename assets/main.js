@@ -1,7 +1,6 @@
 const navToggle = document.querySelector("[data-nav-toggle]");
 const siteNav = document.querySelector("[data-site-nav]");
-const inquiryForm = document.querySelector("[data-inquiry-form]");
-const formNote = document.querySelector("[data-form-note]");
+const inquiryForms = document.querySelectorAll("[data-inquiry-form]");
 
 if (navToggle && siteNav) {
   navToggle.addEventListener("click", () => {
@@ -20,7 +19,18 @@ if (navToggle && siteNav) {
   });
 }
 
-if (inquiryForm) {
+const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+document.querySelectorAll("[data-site-nav] a[href]").forEach((link) => {
+  const href = link.getAttribute("href");
+  if (!href || href.startsWith("#")) return;
+  const linkPath = new URL(href, window.location.origin).pathname.replace(/\/$/, "") || "/";
+  if (linkPath === currentPath || (linkPath !== "/" && currentPath.startsWith(linkPath))) {
+    link.classList.add("is-active");
+  }
+});
+
+inquiryForms.forEach((inquiryForm) => {
+  const formNote = inquiryForm.querySelector("[data-form-note]");
   inquiryForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const data = new FormData(inquiryForm);
@@ -46,4 +56,4 @@ if (inquiryForm) {
       formNote.textContent = "Your mail app should open with a prepared inquiry draft.";
     }
   });
-}
+});
