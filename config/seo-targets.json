@@ -1,0 +1,27 @@
+{
+  "siteUrl": "https://yujihealth.com",
+  "gscSiteUrl": "https://yujihealth.com/",
+  "sitemapUrl": "https://yujihealth.com/sitemap.xml",
+  "categories": ["performance", "accessibility", "best-practices", "seo"],
+  "strategies": ["mobile", "desktop"],
+  "thresholds": {
+    "performance": 0.65,
+    "accessibility": 0.85,
+    "best-practices": 0.85,
+    "seo": 0.9
+  },
+  "urls": [
+    { "path": "/", "label": "Home" },
+    { "path": "/products/", "label": "Product Center" },
+    { "path": "/products/menstrual-cups/", "label": "Menstrual Cups" },
+    { "path": "/products/menstrual-discs/", "label": "Menstrual Discs" },
+    { "path": "/products/pads-liners/", "label": "Pads, Liners and Accessories" },
+    { "path": "/oem-odm/", "label": "OEM/ODM" },
+    { "path": "/quality/", "label": "Quality" },
+    { "path": "/about/", "label": "About" },
+    { "path": "/resources/", "label": "Resources" },
+    { "path": "/resources/menstrual-cup-oem-sourcing-guide/", "label": "Cup OEM Sourcing Guide" },
+    { "path": "/resources/feminine-care-oem-rfq-checklist/", "label": "OEM RFQ Checklist" },
+    { "path": "/contact/", "label": "Contact" }
+  ]
+}

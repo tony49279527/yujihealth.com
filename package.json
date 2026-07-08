@@ -1,0 +1,19 @@
+{
+  "name": "yujihealth-site-ops",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seo:pagespeed": "node scripts/pagespeed-check.mjs",
+    "seo:gsc": "node scripts/gsc.mjs",
+    "seo:gsc:sites": "node scripts/gsc.mjs sites",
+    "seo:gsc:query": "node scripts/gsc.mjs query",
+    "seo:gsc:submit-sitemap": "node scripts/gsc.mjs submit-sitemap",
+    "seo:gsc:inspect": "node scripts/gsc.mjs inspect"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "google-auth-library": "^10.9.0"
+  }
+}

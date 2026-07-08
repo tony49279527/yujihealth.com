@@ -1,0 +1,35 @@
+name: SEO Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * 1"
+
+jobs:
+  seo-monitor:
+    runs-on: ubuntu-latest
+    env:
+      PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
+      GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+      GSC_SITE_URL: https://yujihealth.com/
+      GSC_SITEMAP_URL: https://yujihealth.com/sitemap.xml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Run PageSpeed checks
+        if: ${{ env.PSI_API_KEY != '' }}
+        run: npm run seo:pagespeed
+      - name: Run GSC query
+        if: ${{ env.GSC_SERVICE_ACCOUNT_JSON != '' }}
+        run: npm run seo:gsc:query
+      - name: Upload SEO reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-reports
+          path: reports/
+          if-no-files-found: ignore

@@ -1,0 +1,128 @@
+import fs from "node:fs";
+import path from "node:path";
+
+const root = process.cwd();
+loadEnv(path.join(root, ".env.local"));
+loadEnv(path.join(root, ".env"));
+
+const config = JSON.parse(fs.readFileSync(path.join(root, "config/seo-targets.json"), "utf8"));
+const args = new Map(process.argv.slice(2).map((arg) => {
+  const [key, ...rest] = arg.replace(/^--/, "").split("=");
+  return [key, rest.length ? rest.join("=") : "true"];
+}));
+
+const apiKey = process.env.PSI_API_KEY || "";
+const selectedStrategies = splitArg(args.get("strategy")) || config.strategies;
+const selectedLabels = splitArg(args.get("only"));
+const failOnThreshold = args.get("fail-on-threshold") === "true";
+const urls = selectedLabels
+  ? config.urls.filter((item) => selectedLabels.includes(item.label) || selectedLabels.includes(item.path))
+  : config.urls;
+
+if (!apiKey) {
+  console.warn("PSI_API_KEY is not set. The public API is heavily rate-limited; configure .env.local or CI secrets.");
+}
+
+const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+const reportDir = path.join(root, "reports/pagespeed");
+fs.mkdirSync(reportDir, { recursive: true });
+
+const rows = [];
+const failures = [];
+
+for (const item of urls) {
+  const target = new URL(item.path, config.siteUrl).toString();
+  for (const strategy of selectedStrategies) {
+    const result = await runPageSpeed(target, strategy);
+    const categories = result.lighthouseResult.categories;
+    const row = {
+      label: item.label,
+      url: target,
+      strategy,
+      fetchTime: result.lighthouseResult.fetchTime,
+      performance: score(categories.performance),
+      accessibility: score(categories.accessibility),
+      bestPractices: score(categories["best-practices"]),
+      seo: score(categories.seo),
+      lcp: auditValue(result, "largest-contentful-paint"),
+      cls: auditValue(result, "cumulative-layout-shift"),
+      tbt: auditValue(result, "total-blocking-time")
+    };
+    rows.push(row);
+    for (const [name, threshold] of Object.entries(config.thresholds)) {
+      const value = row[name === "best-practices" ? "bestPractices" : name];
+      if (value != null && value < threshold) {
+        failures.push(`${row.label} ${strategy} ${name} ${Math.round(value * 100)} < ${Math.round(threshold * 100)}`);
+      }
+    }
+    console.log(formatRow(row));
+  }
+}
+
+const reportPath = path.join(reportDir, `pagespeed-${stamp}.json`);
+fs.writeFileSync(reportPath, JSON.stringify({ generatedAt: new Date().toISOString(), rows, failures }, null, 2));
+console.log(`Report written: ${path.relative(root, reportPath)}`);
+
+if (failOnThreshold && failures.length) {
+  console.error(`Threshold failures:\n${failures.join("\n")}`);
+  process.exit(1);
+}
+
+async function runPageSpeed(url, strategy) {
+  const endpoint = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
+  endpoint.searchParams.set("url", url);
+  endpoint.searchParams.set("strategy", strategy);
+  for (const category of config.categories) endpoint.searchParams.append("category", category);
+  if (apiKey) endpoint.searchParams.set("key", apiKey);
+
+  const response = await fetch(endpoint);
+  const json = await response.json();
+  if (!response.ok || json.error) {
+    const message = json.error?.message || `${response.status} ${response.statusText}`;
+    throw new Error(`PageSpeed failed for ${url} (${strategy}): ${message}`);
+  }
+  return json;
+}
+
+function loadEnv(file) {
+  if (!fs.existsSync(file)) return;
+  for (const rawLine of fs.readFileSync(file, "utf8").split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+    const eq = line.indexOf("=");
+    if (eq === -1) continue;
+    const key = line.slice(0, eq).trim();
+    const value = line.slice(eq + 1).trim().replace(/^["']|["']$/g, "");
+    if (!(key in process.env)) process.env[key] = value;
+  }
+}
+
+function splitArg(value) {
+  return value && value !== "true" ? value.split(",").map((item) => item.trim()).filter(Boolean) : null;
+}
+
+function score(category) {
+  return typeof category?.score === "number" ? category.score : null;
+}
+
+function auditValue(result, id) {
+  const audit = result.lighthouseResult.audits[id];
+  return audit ? audit.displayValue || audit.numericValue || null : null;
+}
+
+function pct(value) {
+  return value == null ? "n/a" : `${Math.round(value * 100)}`;
+}
+
+function formatRow(row) {
+  return [
+    row.strategy.padEnd(7),
+    row.label.padEnd(34),
+    `perf ${pct(row.performance).padStart(3)}`,
+    `seo ${pct(row.seo).padStart(3)}`,
+    `a11y ${pct(row.accessibility).padStart(3)}`,
+    `bp ${pct(row.bestPractices).padStart(3)}`,
+    `LCP ${row.lcp || "n/a"}`,
+    `CLS ${row.cls || "n/a"}`
+  ].join("  ");
+}
