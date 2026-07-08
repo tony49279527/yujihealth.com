@@ -16,19 +16,19 @@
     <loc>https://yujihealth.com/products/menstrual-cups/</loc>
     <lastmod>2026-07-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yujihealth.com/products/menstrual-discs/</loc>
     <lastmod>2026-07-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yujihealth.com/products/pads-liners/</loc>
     <lastmod>2026-07-08</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.82</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yujihealth.com/oem-odm/</loc>
@@ -45,11 +45,23 @@
   <url>
     <loc>https://yujihealth.com/about/</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.72</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://yujihealth.com/resources/</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yujihealth.com/resources/menstrual-cup-oem-sourcing-guide/</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://yujihealth.com/resources/feminine-care-oem-rfq-checklist/</loc>
     <lastmod>2026-07-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -57,7 +69,7 @@
   <url>
     <loc>https://yujihealth.com/contact/</loc>
     <lastmod>2026-07-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
