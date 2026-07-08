@@ -40,7 +40,7 @@ if (inquiryForm) {
       ].join("\n"),
     );
 
-    window.location.href = `mailto:sales@yujihealth.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:info@yujihealth.com?subject=${subject}&body=${body}`;
 
     if (formNote) {
       formNote.textContent = "Your mail app should open with a prepared inquiry draft.";
