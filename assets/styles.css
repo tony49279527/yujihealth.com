@@ -23,6 +23,10 @@ html {
   scroll-behavior: smooth;
 }
 
+[id] {
+  scroll-margin-top: 88px;
+}
+
 body {
   margin: 0;
   color: var(--ink);
@@ -458,6 +462,50 @@ h3 {
   font-weight: 800;
 }
 
+.procurement-panel,
+.entity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 26px;
+  overflow: hidden;
+  background: rgba(234, 219, 214, 0.95);
+  border: 1px solid rgba(234, 219, 214, 0.95);
+  border-radius: 8px;
+}
+
+.procurement-panel div,
+.entity-grid article {
+  min-width: 0;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.procurement-panel strong,
+.entity-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--rose-dark);
+  font-size: 20px;
+  line-height: 1.16;
+}
+
+.procurement-panel p,
+.entity-grid p {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.fact-label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .process {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -763,7 +811,9 @@ textarea:focus {
 
   .metrics,
   .process,
-  .cert-grid {
+  .cert-grid,
+  .procurement-panel,
+  .entity-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -834,6 +884,10 @@ textarea:focus {
     align-items: stretch;
   }
 
+  .quality-content {
+    order: -1;
+  }
+
   .hero-actions .button,
   .oem-callout .button {
     width: 100%;
@@ -844,7 +898,9 @@ textarea:focus {
   .product-grid,
   .process,
   .cert-grid,
-  .market-list {
+  .market-list,
+  .procurement-panel,
+  .entity-grid {
     grid-template-columns: 1fr;
   }
 
@@ -855,6 +911,8 @@ textarea:focus {
   .product-card,
   .process article,
   .market-list article,
+  .procurement-panel div,
+  .entity-grid article,
   .inquiry-form {
     padding: 20px;
   }

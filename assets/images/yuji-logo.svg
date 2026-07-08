@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">YUJI logo</title>
+  <desc id="desc">A Y monogram for YUJI Yueji.</desc>
+  <rect width="512" height="512" rx="96" fill="#835672" />
+  <path d="M134 132h64l58 135 58-135h64L288 325v75h-64v-75L134 132Z" fill="#fff7f2" />
+</svg>
