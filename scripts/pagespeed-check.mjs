@@ -15,6 +15,7 @@ const apiKey = process.env.PSI_API_KEY || "";
 const selectedStrategies = splitArg(args.get("strategy")) || config.strategies;
 const selectedLabels = splitArg(args.get("only"));
 const failOnThreshold = args.get("fail-on-threshold") === "true";
+const failOnError = args.get("fail-on-error") === "true";
 const urls = selectedLabels
   ? config.urls.filter((item) => selectedLabels.includes(item.label) || selectedLabels.includes(item.path))
   : config.urls;
@@ -33,7 +34,16 @@ const failures = [];
 for (const item of urls) {
   const target = new URL(item.path, config.siteUrl).toString();
   for (const strategy of selectedStrategies) {
-    const result = await runPageSpeed(target, strategy);
+    let result;
+    try {
+      result = await runPageSpeed(target, strategy);
+    } catch (error) {
+      const message = error.message || String(error);
+      failures.push(`${item.label} ${strategy} ${message}`);
+      rows.push({ label: item.label, url: target, strategy, error: message });
+      console.error(`ERROR ${strategy.padEnd(7)} ${item.label}: ${message}`);
+      continue;
+    }
     const categories = result.lighthouseResult.categories;
     const row = {
       label: item.label,
@@ -63,7 +73,7 @@ const reportPath = path.join(reportDir, `pagespeed-${stamp}.json`);
 fs.writeFileSync(reportPath, JSON.stringify({ generatedAt: new Date().toISOString(), rows, failures }, null, 2));
 console.log(`Report written: ${path.relative(root, reportPath)}`);
 
-if (failOnThreshold && failures.length) {
+if ((failOnThreshold || failOnError) && failures.length) {
   console.error(`Threshold failures:\n${failures.join("\n")}`);
   process.exit(1);
 }
@@ -75,13 +85,22 @@ async function runPageSpeed(url, strategy) {
   for (const category of config.categories) endpoint.searchParams.append("category", category);
   if (apiKey) endpoint.searchParams.set("key", apiKey);
 
-  const response = await fetch(endpoint);
-  const json = await response.json();
-  if (!response.ok || json.error) {
-    const message = json.error?.message || `${response.status} ${response.statusText}`;
-    throw new Error(`PageSpeed failed for ${url} (${strategy}): ${message}`);
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const response = await fetch(endpoint);
+      const json = await response.json();
+      if (!response.ok || json.error) {
+        const message = json.error?.message || `${response.status} ${response.statusText}`;
+        throw new Error(`PageSpeed failed for ${url} (${strategy}): ${message}`);
+      }
+      return json;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 3000));
+    }
   }
-  return json;
+  throw lastError;
 }
 
 function loadEnv(file) {
