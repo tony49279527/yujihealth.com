@@ -11,7 +11,7 @@
     "seo:gsc:inspect": "node scripts/gsc.mjs inspect"
   },
   "engines": {
-    "node": ">=20"
+    "node": "22.x"
   },
   "dependencies": {
     "google-auth-library": "^10.9.0"

@@ -31,29 +31,60 @@ document.querySelectorAll("[data-site-nav] a[href]").forEach((link) => {
 
 inquiryForms.forEach((inquiryForm) => {
   const formNote = inquiryForm.querySelector("[data-form-note]");
-  inquiryForm.addEventListener("submit", (event) => {
+  const submitButton = inquiryForm.querySelector('button[type="submit"]');
+  const defaultSubmitLabel = submitButton ? submitButton.textContent : "";
+
+  const setFormNote = (message, state = "neutral") => {
+    if (!formNote) return;
+    formNote.textContent = message;
+    formNote.classList.toggle("is-success", state === "success");
+    formNote.classList.toggle("is-error", state === "error");
+  };
+
+  inquiryForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(inquiryForm);
-    const name = String(data.get("name") || "").trim();
-    const email = String(data.get("email") || "").trim();
-    const product = String(data.get("product") || "").trim();
-    const message = String(data.get("message") || "").trim();
-    const subject = encodeURIComponent(`YUJI inquiry: ${product || "OEM/ODM"}`);
-    const body = encodeURIComponent(
-      [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Product interest: ${product}`,
-        "",
-        "Message:",
-        message || "Please send product specifications, MOQ, sample policy, and quotation details.",
-      ].join("\n"),
-    );
+    const payload = {
+      name: String(data.get("name") || "").trim(),
+      email: String(data.get("email") || "").trim(),
+      company: String(data.get("company") || "").trim(),
+      country: String(data.get("country") || "").trim(),
+      product: String(data.get("product") || "").trim(),
+      volume: String(data.get("volume") || "").trim(),
+      message: String(data.get("message") || "").trim(),
+      website: String(data.get("website") || "").trim(),
+    };
 
-    window.location.href = `mailto:info@yujihealth.com?subject=${subject}&body=${body}`;
+    if (!payload.name || !payload.email || !payload.message) {
+      setFormNote("Please add your name, email, and project message before sending.", "error");
+      return;
+    }
 
-    if (formNote) {
-      formNote.textContent = "Your mail app should open with a prepared inquiry draft.";
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending RFQ...";
+    }
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Contact endpoint unavailable");
+      }
+
+      inquiryForm.reset();
+      setFormNote("Inquiry received. YUJI will review the details and reply from info@yujihealth.com.", "success");
+    } catch (error) {
+      setFormNote("Online submission is temporarily unavailable. Email info@yujihealth.com with your market, volume, packaging, and document needs.", "error");
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = defaultSubmitLabel;
+      }
     }
   });
 });
