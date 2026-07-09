@@ -823,6 +823,10 @@ details p {
   max-width: 930px;
 }
 
+.article-body > * {
+  min-width: 0;
+}
+
 .article-body h2 {
   margin-bottom: 12px;
   font-size: clamp(30px, 4vw, 48px);

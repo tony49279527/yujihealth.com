@@ -22,6 +22,8 @@
     { "path": "/resources/", "label": "Resources" },
     { "path": "/resources/menstrual-cup-oem-sourcing-guide/", "label": "Cup OEM Sourcing Guide" },
     { "path": "/resources/feminine-care-oem-rfq-checklist/", "label": "OEM RFQ Checklist" },
+    { "path": "/resources/menstrual-disc-oem-moq/", "label": "Disc OEM MOQ Guide" },
+    { "path": "/resources/private-label-sanitary-pads-china/", "label": "Private Label Pads Guide" },
     { "path": "/contact/", "label": "Contact" }
   ]
 }
