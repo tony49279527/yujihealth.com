@@ -6,6 +6,7 @@
     "seo:pagespeed": "node scripts/pagespeed-check.mjs",
     "seo:gsc": "node scripts/gsc.mjs",
     "seo:gsc:sites": "node scripts/gsc.mjs sites",
+    "seo:gsc:sitemaps": "node scripts/gsc.mjs sitemaps",
     "seo:gsc:query": "node scripts/gsc.mjs query",
     "seo:gsc:submit-sitemap": "node scripts/gsc.mjs submit-sitemap",
     "seo:gsc:inspect": "node scripts/gsc.mjs inspect"

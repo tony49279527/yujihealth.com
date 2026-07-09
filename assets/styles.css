@@ -36,8 +36,7 @@ body {
   background:
     linear-gradient(180deg, #fbfdfa 0%, var(--paper) 36%, #f8f3f6 100%);
   font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+    "Avenir Next", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.55;
 }
 

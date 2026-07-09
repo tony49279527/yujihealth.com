@@ -17,11 +17,12 @@ fs.mkdirSync(reportDir, { recursive: true });
 
 try {
   if (command === "sites") await listSites();
+  else if (command === "sitemaps") await listSitemaps();
   else if (command === "submit-sitemap") await submitSitemap();
   else if (command === "query") await querySearchAnalytics();
   else if (command === "inspect") await inspectUrl();
   else {
-    console.error("Unknown command. Use: sites | submit-sitemap | query | inspect");
+    console.error("Unknown command. Use: sites | sitemaps | submit-sitemap | query | inspect");
     process.exit(1);
   }
 } catch (error) {
@@ -36,6 +37,17 @@ async function listSites() {
   const json = await api("GET", "https://searchconsole.googleapis.com/webmasters/v3/sites");
   const sites = json.siteEntry || [];
   console.log(sites.length ? JSON.stringify(sites, null, 2) : "No Search Console sites visible to this credential.");
+}
+
+async function listSitemaps() {
+  const endpoint = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/sitemaps`;
+  const json = await api("GET", endpoint);
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const reportPath = path.join(reportDir, `gsc-sitemaps-${stamp}.json`);
+  fs.writeFileSync(reportPath, JSON.stringify({ siteUrl, sitemaps: json.sitemap || [] }, null, 2));
+  console.log(`Sitemaps: ${json.sitemap?.length || 0}`);
+  console.log(`Report written: ${path.relative(root, reportPath)}`);
+  console.log(JSON.stringify(json.sitemap || [], null, 2));
 }
 
 async function submitSitemap() {
@@ -72,7 +84,7 @@ async function inspectUrl() {
   const json = await api("POST", "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect", body);
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   const reportPath = path.join(reportDir, `gsc-inspect-${stamp}.json`);
-  fs.writeFileSync(reportPath, JSON.stringify(json, null, 2));
+  fs.writeFileSync(reportPath, JSON.stringify({ siteUrl, inspectionUrl, result: json }, null, 2));
   console.log(`Inspection written: ${path.relative(root, reportPath)}`);
   console.log(JSON.stringify(json.inspectionResult?.indexStatusResult || json, null, 2));
 }

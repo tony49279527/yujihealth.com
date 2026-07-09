@@ -17,6 +17,7 @@ This repository includes durable PageSpeed and Google Search Console tooling for
 npm run seo:pagespeed
 npm run seo:pagespeed -- --strategy=mobile --only=Home
 npm run seo:gsc:sites
+npm run seo:gsc:sitemaps
 npm run seo:gsc:submit-sitemap
 npm run seo:gsc:query
 npm run seo:gsc:inspect -- --url=https://yujihealth.com/products/menstrual-cups/

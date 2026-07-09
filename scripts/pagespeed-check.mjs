@@ -55,8 +55,13 @@ for (const item of urls) {
       bestPractices: score(categories["best-practices"]),
       seo: score(categories.seo),
       lcp: auditValue(result, "largest-contentful-paint"),
+      inp: auditValue(result, "interaction-to-next-paint"),
       cls: auditValue(result, "cumulative-layout-shift"),
-      tbt: auditValue(result, "total-blocking-time")
+      tbt: auditValue(result, "total-blocking-time"),
+      fieldData: summarizeExperience(result.loadingExperience),
+      originFieldData: summarizeExperience(result.originLoadingExperience),
+      opportunities: auditGroup(result, "load-opportunities"),
+      diagnostics: auditGroup(result, "diagnostics")
     };
     rows.push(row);
     for (const [name, threshold] of Object.entries(config.thresholds)) {
@@ -142,6 +147,60 @@ function formatRow(row) {
     `a11y ${pct(row.accessibility).padStart(3)}`,
     `bp ${pct(row.bestPractices).padStart(3)}`,
     `LCP ${row.lcp || "n/a"}`,
-    `CLS ${row.cls || "n/a"}`
+    `INP ${row.inp || fieldMetric(row.fieldData, "inp") || fieldMetric(row.originFieldData, "inp") || "n/a"}`,
+    `CLS ${row.cls || "n/a"}`,
+    `field ${row.fieldData?.category || row.originFieldData?.category || "n/a"}`
   ].join("  ");
+}
+
+function summarizeExperience(experience) {
+  if (!experience) return null;
+  const metrics = experience.metrics || {};
+  return {
+    category: experience.overall_category || null,
+    id: experience.id || null,
+    initialUrl: experience.initial_url || null,
+    metrics: {
+      lcp: summarizeMetric(metrics.LARGEST_CONTENTFUL_PAINT_MS),
+      inp: summarizeMetric(metrics.INTERACTION_TO_NEXT_PAINT),
+      cls: summarizeMetric(metrics.CUMULATIVE_LAYOUT_SHIFT_SCORE)
+    }
+  };
+}
+
+function summarizeMetric(metric) {
+  if (!metric) return null;
+  return {
+    percentile: metric.percentile,
+    category: metric.category,
+    distributions: metric.distributions || []
+  };
+}
+
+function fieldMetric(experience, key) {
+  const metric = experience?.metrics?.[key];
+  if (!metric || metric.percentile == null) return "";
+  if (key === "cls") return String(metric.percentile);
+  return `${metric.percentile} ms`;
+}
+
+function auditGroup(result, group) {
+  const audits = result.lighthouseResult.audits || {};
+  const refs = result.lighthouseResult.categories.performance?.auditRefs || [];
+  return refs
+    .filter((ref) => ref.group === group)
+    .map((ref) => {
+      const audit = audits[ref.id];
+      if (!audit || audit.scoreDisplayMode === "notApplicable" || audit.score === 1) return null;
+      return {
+        id: ref.id,
+        title: audit.title,
+        score: audit.score,
+        displayValue: audit.displayValue || null,
+        numericValue: audit.numericValue ?? null,
+        numericUnit: audit.numericUnit || null
+      };
+    })
+    .filter(Boolean)
+    .slice(0, 6);
 }
