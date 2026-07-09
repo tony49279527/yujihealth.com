@@ -43,6 +43,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://yujihealth.com/quality/evidence/</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://yujihealth.com/about/</loc>
     <lastmod>2026-07-09</lastmod>
     <changefreq>weekly</changefreq>

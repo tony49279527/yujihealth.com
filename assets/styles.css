@@ -643,6 +643,10 @@ tr:last-child td {
   font-size: clamp(30px, 4vw, 48px);
 }
 
+.compact-cta {
+  margin-top: 28px;
+}
+
 .cta-band .button.secondary {
   color: var(--ink);
   background: #fffaf7;
@@ -726,6 +730,13 @@ textarea:focus {
 .form-note {
   margin: 0;
   font-size: 12px;
+}
+
+.inline-link {
+  color: var(--teal-dark);
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .form-note.is-success {

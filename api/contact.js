@@ -82,7 +82,7 @@ export default async function handler(request, response) {
 
   const to = process.env.INQUIRY_TO || DEFAULT_INQUIRY_TO;
   const publicEmail = process.env.PUBLIC_CONTACT_EMAIL || DEFAULT_PUBLIC_EMAIL;
-  const from = process.env.RESEND_FROM || "YUJI Website <onboarding@resend.dev>";
+  const from = process.env.RESEND_FROM || `YUJI Website <${publicEmail}>`;
   const subjectParts = [payload.product || "OEM/ODM", payload.company || payload.country || payload.name].filter(Boolean);
 
   const resendResponse = await fetch("https://api.resend.com/emails", {

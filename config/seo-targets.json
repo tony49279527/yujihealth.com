@@ -18,6 +18,7 @@
     { "path": "/products/pads-liners/", "label": "Pads, Liners and Accessories" },
     { "path": "/oem-odm/", "label": "OEM/ODM" },
     { "path": "/quality/", "label": "Quality" },
+    { "path": "/quality/evidence/", "label": "Quality Evidence" },
     { "path": "/about/", "label": "About" },
     { "path": "/resources/", "label": "Resources" },
     { "path": "/resources/menstrual-cup-oem-sourcing-guide/", "label": "Cup OEM Sourcing Guide" },

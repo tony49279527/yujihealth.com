@@ -9,7 +9,8 @@
     "seo:gsc:sitemaps": "node scripts/gsc.mjs sitemaps",
     "seo:gsc:query": "node scripts/gsc.mjs query",
     "seo:gsc:submit-sitemap": "node scripts/gsc.mjs submit-sitemap",
-    "seo:gsc:inspect": "node scripts/gsc.mjs inspect"
+    "seo:gsc:inspect": "node scripts/gsc.mjs inspect",
+    "seo:gsc:inspect-all": "node scripts/gsc.mjs inspect-all"
   },
   "engines": {
     "node": "22.x"

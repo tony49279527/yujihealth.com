@@ -21,8 +21,9 @@ try {
   else if (command === "submit-sitemap") await submitSitemap();
   else if (command === "query") await querySearchAnalytics();
   else if (command === "inspect") await inspectUrl();
+  else if (command === "inspect-all") await inspectAllUrls();
   else {
-    console.error("Unknown command. Use: sites | sitemaps | submit-sitemap | query | inspect");
+    console.error("Unknown command. Use: sites | sitemaps | submit-sitemap | query | inspect | inspect-all");
     process.exit(1);
   }
 } catch (error) {
@@ -89,6 +90,56 @@ async function inspectUrl() {
   console.log(JSON.stringify(json.inspectionResult?.indexStatusResult || json, null, 2));
 }
 
+async function inspectAllUrls() {
+  const selected = args.only ? split(args.only) : null;
+  const urls = selected
+    ? config.urls.filter((item) => selected.includes(item.label) || selected.includes(item.path))
+    : config.urls;
+  const rows = [];
+  const failures = [];
+
+  for (const item of urls) {
+    const inspectionUrl = new URL(item.path, config.siteUrl).toString();
+    const body = { inspectionUrl, siteUrl, languageCode: "en-US" };
+    try {
+      const json = await api("POST", "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect", body);
+      const status = json.inspectionResult?.indexStatusResult || {};
+      const row = {
+        label: item.label,
+        path: item.path,
+        inspectionUrl,
+        verdict: status.verdict || null,
+        coverageState: status.coverageState || null,
+        indexingState: status.indexingState || null,
+        robotsTxtState: status.robotsTxtState || null,
+        pageFetchState: status.pageFetchState || null,
+        googleCanonical: status.googleCanonical || null,
+        userCanonical: status.userCanonical || null,
+        lastCrawlTime: status.lastCrawlTime || null,
+        crawledAs: status.crawledAs || null
+      };
+      rows.push(row);
+      console.log(`${item.label.padEnd(34)} ${row.verdict || "n/a"} | ${row.coverageState || "n/a"} | ${row.pageFetchState || "n/a"}`);
+    } catch (error) {
+      const message = error.message || String(error);
+      failures.push(`${item.label}: ${message}`);
+      rows.push({ label: item.label, path: item.path, inspectionUrl, error: message });
+      console.error(`ERROR ${item.label}: ${message}`);
+    }
+  }
+
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const reportPath = path.join(reportDir, `gsc-inspect-all-${stamp}.json`);
+  fs.writeFileSync(reportPath, JSON.stringify({ siteUrl, rows, failures }, null, 2));
+  console.log(`Inspection rows: ${rows.length}`);
+  console.log(`Report written: ${path.relative(root, reportPath)}`);
+
+  if (args["fail-on-error"] === "true" && failures.length) {
+    console.error(`Inspection failures:\n${failures.join("\n")}`);
+    process.exit(1);
+  }
+}
+
 async function api(method, url, body) {
   const token = await getAccessToken();
   const quotaProject = getQuotaProject();
@@ -97,17 +148,32 @@ async function api(method, url, body) {
     "Content-Type": "application/json"
   };
   if (quotaProject) headers["x-goog-user-project"] = quotaProject;
-  const response = await fetch(url, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined
-  });
-  const json = await response.json().catch(() => ({}));
-  if (!response.ok || json.error) {
-    const message = json.error?.message || `${response.status} ${response.statusText}`;
-    throw new Error(`GSC API ${method} ${url} failed: ${response.status} ${message}`);
+  let lastError;
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const response = await fetch(url, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : undefined
+      });
+      const json = await response.json().catch(() => ({}));
+      if (!response.ok || json.error) {
+        const message = json.error?.message || `${response.status} ${response.statusText}`;
+        const error = new Error(`GSC API ${method} ${url} failed: ${response.status} ${message}`);
+        if (![408, 429].includes(response.status) && response.status < 500) throw error;
+        lastError = error;
+      } else {
+        return json;
+      }
+    } catch (error) {
+      lastError = error;
+      if (/403|insufficient|PERMISSION_DENIED/i.test(error.message || "")) throw error;
+    }
+    if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
   }
-  return json;
+
+  throw lastError;
 }
 
 async function getAccessToken() {

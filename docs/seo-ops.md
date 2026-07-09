@@ -21,6 +21,7 @@ npm run seo:gsc:sitemaps
 npm run seo:gsc:submit-sitemap
 npm run seo:gsc:query
 npm run seo:gsc:inspect -- --url=https://yujihealth.com/products/menstrual-cups/
+npm run seo:gsc:inspect-all
 ```
 
 Reports are written under `reports/`, which is intentionally ignored by git.
@@ -40,3 +41,13 @@ https://yujihealth.com/sitemap.xml
 ```
 
 For CI-based GSC checks, add the service account email as a user on the verified property.
+
+## Contact Form Sender
+
+Set `RESEND_FROM` to a verified sender on the production domain, for example:
+
+```text
+YUJI Website <info@yujihealth.com>
+```
+
+The API falls back to the public contact email if `RESEND_FROM` is absent, but production should use an explicitly verified Resend sender to avoid delivery failures.
