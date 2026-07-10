@@ -51,6 +51,9 @@ inquiryForms.forEach((inquiryForm) => {
       country: String(data.get("country") || "").trim(),
       product: String(data.get("product") || "").trim(),
       volume: String(data.get("volume") || "").trim(),
+      packaging: String(data.get("packaging") || "").trim(),
+      timeline: String(data.get("timeline") || "").trim(),
+      documents: String(data.get("documents") || "").trim(),
       message: String(data.get("message") || "").trim(),
       website: String(data.get("website") || "").trim(),
     };

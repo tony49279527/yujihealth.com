@@ -111,7 +111,12 @@
             </div>
             <label>Product interest<select name="product"><option>Menstrual cups</option><option>Menstrual discs</option><option>Sanitary pads and liners</option><option>Accessories and starter kits</option><option>OEM/ODM mixed program</option></select></label>
             <label>Estimated volume<input name="volume" placeholder="Samples, trial order, or forecast quantity" /></label>
-            <label>Project message<textarea name="message" rows="7" required placeholder="Target market, quantity, packaging, sample needs, document pack, timeline..."></textarea></label>
+            <div class="form-grid">
+              <label>Packaging needs<input name="packaging" placeholder="Pouch, box, leaflet, barcode, kit, languages" /></label>
+              <label>Timeline<input name="timeline" placeholder="Sample date, launch window, or lead-time need" /></label>
+            </div>
+            <label>Document needs<input name="documents" placeholder="Specs, certificate scans, QC release, carton data" /></label>
+            <label>Project message<textarea name="message" rows="6" required placeholder="Target market, quantity, packaging, sample needs, document pack, timeline..."></textarea></label>
             <button class="button primary full" type="submit">Submit RFQ online</button>
             <p class="form-note" data-form-note>Include market, quantity, packaging, and document needs for a faster quotation.</p>
             <p class="form-note">Need a template? <a class="inline-link" href="/downloads/yuji-feminine-care-rfq-checklist.txt" download>Download the RFQ checklist</a>.</p>
