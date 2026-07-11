@@ -7,3 +7,11 @@ reports/
 .gsc-verification-file
 .workbuddy/
 .claude/
+.DS_Store
+**/.DS_Store
+gpt-site/node_modules/
+gpt-site/dist/
+gpt-site/.next/
+gpt-site/.vinext/
+gpt-site/.wrangler/
+gpt-site/out/
