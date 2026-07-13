@@ -70,7 +70,8 @@ async function querySearchAnalytics() {
   const json = await api("POST", endpoint, body);
   const rows = json.rows || [];
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const reportPath = path.join(reportDir, `gsc-query-${stamp}.json`);
+  const dimensionSlug = body.dimensions.map(slugPart).join("-");
+  const reportPath = path.join(reportDir, `gsc-query-${dimensionSlug}-${startDate}-to-${endDate}-${stamp}-${process.pid}.json`);
   fs.writeFileSync(reportPath, JSON.stringify({ siteUrl, request: body, rows }, null, 2));
   console.log(`Rows: ${rows.length}`);
   console.log(`Report written: ${path.relative(root, reportPath)}`);
@@ -239,6 +240,10 @@ function parseArgs(values) {
 
 function split(value) {
   return value.split(",").map((item) => item.trim()).filter(Boolean);
+}
+
+function slugPart(value) {
+  return String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "all";
 }
 
 function isoDate(date) {
