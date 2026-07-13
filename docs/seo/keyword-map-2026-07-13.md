@@ -27,6 +27,29 @@
 | `/resources/menstrual-cup-oem-sourcing-guide/` | how to choose a menstrual cup OEM manufacturer | Middle | 2 impressions; page position 5.0 | Pending | Add original supplier-evaluation evidence or downloadable checklist data. |
 | `/resources/feminine-care-oem-rfq-checklist/` | feminine care OEM RFQ checklist | Middle/Bottom | 1 impression; page position 4.0 | Pending | Use as the internal-link hub into quote, products, quality, and MOQ guides. |
 
+## Current targeting review
+
+| Page URL | Current keyword signal from Title/H1 | Recommended target | Intent |
+| --- | --- | --- | --- |
+| `/` | feminine care OEM manufacturer China | feminine care OEM manufacturer China | Bottom funnel - keep |
+| `/products/` | YUJI feminine care OEM/ODM product center | feminine care OEM product catalog | Bottom funnel - clarify category |
+| `/products/menstrual-cups/` | menstrual cup OEM manufacturer China | menstrual cup OEM manufacturer China | Bottom funnel - keep |
+| `/products/menstrual-discs/` | menstrual disc OEM manufacturer China | reusable menstrual disc OEM manufacturer China | Bottom funnel - strengthen product modifier |
+| `/products/pads-liners/` | sanitary pad and liner OEM manufacturer China | sanitary pad private-label manufacturer China | Bottom funnel - emphasize private label |
+| `/applications/` | feminine care OEM for Amazon, DTC and retail | feminine care OEM for Amazon and retail brands | Bottom funnel - keep channel intent |
+| `/oem-odm/` | feminine care OEM/ODM manufacturing process | feminine care OEM/ODM manufacturer process | Bottom funnel - keep |
+| `/quality/` | feminine care quality system and compliance review | feminine care OEM quality control | Middle/bottom funnel - simplify |
+| `/quality/evidence/` | feminine care OEM quality evidence | feminine care OEM quality documents | Bottom funnel - document intent |
+| `/about/` | Xi'an feminine care manufacturer | Xi'an Yuji Biotechnology manufacturer | Brand/entity - keep entity focus |
+| `/resources/` | feminine care OEM buyer resources and FAQ | feminine care OEM sourcing guides | Middle funnel - clarify resource intent |
+| `/resources/menstrual-cup-oem-sourcing-guide/` | how to choose a menstrual cup OEM manufacturer | how to source a menstrual cup OEM manufacturer | Middle funnel - sourcing language |
+| `/resources/menstrual-cup-vs-disc-oem/` | menstrual cup vs disc OEM | menstrual cup vs menstrual disc for private label | Decision intent - broaden buyer wording |
+| `/resources/menstrual-cup-oem-moq/` | menstrual cup OEM MOQ | menstrual cup OEM MOQ and trial order | Bottom funnel - retain MOQ |
+| `/resources/menstrual-disc-oem-moq/` | menstrual disc OEM MOQ | menstrual disc OEM MOQ and private label | Bottom funnel - retain MOQ |
+| `/resources/private-label-sanitary-pads-china/` | private label sanitary pads China | private label sanitary pad manufacturer China | Bottom funnel - manufacturer modifier |
+| `/resources/feminine-care-oem-rfq-checklist/` | feminine care OEM RFQ checklist | feminine care OEM quotation checklist | Bottom funnel - keep |
+| `/contact/` | YUJI feminine care OEM quote | feminine care OEM quote and samples | Conversion - keep |
+
 ## Pages that require business evidence before creation
 
 1. `/alternatives/[competitor]-alternative/`: requires named competitors, dated primary-source capability/pricing evidence, and legal review of comparative claims.
