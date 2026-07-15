@@ -36,6 +36,9 @@ const buildInquiryText = (payload, publicEmail) => [
   `Packaging needs: ${payload.packaging || "Not provided"}`,
   `Timeline: ${payload.timeline || "Not provided"}`,
   `Document needs: ${payload.documents || "Not provided"}`,
+  `Source page: ${payload.sourcePage || "Direct or unavailable"}`,
+  `Landing page: ${payload.landingPage || "Direct or unavailable"}`,
+  `Campaign: ${payload.campaign || "Not provided"}`,
   "",
   "Project message:",
   payload.message,
@@ -67,6 +70,9 @@ export default async function handler(request, response) {
     documents: clean(body.documents, 400),
     message: clean(body.message, 3000),
     website: clean(body.website, 160),
+    sourcePage: clean(body.sourcePage, 240),
+    landingPage: clean(body.landingPage, 240),
+    campaign: clean(body.campaign, 800),
   };
 
   if (payload.website) {

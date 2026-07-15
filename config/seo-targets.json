@@ -90,6 +90,10 @@
     {
       "path": "/contact/",
       "label": "Contact"
+    },
+    {
+      "path": "/privacy/",
+      "label": "Privacy"
     }
   ]
 }

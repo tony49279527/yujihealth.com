@@ -1,6 +1,24 @@
 const navToggle = document.querySelector("[data-nav-toggle]");
 const siteNav = document.querySelector("[data-site-nav]");
 const inquiryForms = document.querySelectorAll("[data-inquiry-form]");
+const attributionKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+const attributionPrefix = "yuji:attribution:";
+const currentUrl = new URL(window.location.href);
+
+try {
+  if (!window.sessionStorage.getItem(`${attributionPrefix}landing_page`)) {
+    window.sessionStorage.setItem(`${attributionPrefix}landing_page`, currentUrl.pathname);
+  }
+
+  attributionKeys.forEach((key) => {
+    const value = currentUrl.searchParams.get(key);
+    if (value && !window.sessionStorage.getItem(`${attributionPrefix}${key}`)) {
+      window.sessionStorage.setItem(`${attributionPrefix}${key}`, value.slice(0, 160));
+    }
+  });
+} catch {
+  // Attribution is optional when browser storage is unavailable.
+}
 
 if (navToggle && siteNav) {
   navToggle.addEventListener("click", () => {
@@ -33,6 +51,42 @@ inquiryForms.forEach((inquiryForm) => {
   const formNote = inquiryForm.querySelector("[data-form-note]");
   const submitButton = inquiryForm.querySelector('button[type="submit"]');
   const defaultSubmitLabel = submitButton ? submitButton.textContent : "";
+  const productSelect = inquiryForm.querySelector('select[name="product"]');
+  const sourcePageInput = inquiryForm.querySelector('input[name="sourcePage"]');
+  const landingPageInput = inquiryForm.querySelector('input[name="landingPage"]');
+  const campaignInput = inquiryForm.querySelector('input[name="campaign"]');
+  const requestedProduct = new URL(window.location.href).searchParams.get("product");
+
+  if (productSelect && requestedProduct) {
+    const hasMatchingOption = Array.from(productSelect.options).some((option) => option.value === requestedProduct);
+    if (hasMatchingOption) productSelect.value = requestedProduct;
+  }
+
+  if (sourcePageInput && document.referrer) {
+    try {
+      const referrerUrl = new URL(document.referrer);
+      if (referrerUrl.origin === window.location.origin) sourcePageInput.value = referrerUrl.pathname;
+    } catch {
+      sourcePageInput.value = "";
+    }
+  }
+
+  try {
+    if (landingPageInput) {
+      landingPageInput.value = window.sessionStorage.getItem(`${attributionPrefix}landing_page`) || currentUrl.pathname;
+    }
+    if (campaignInput) {
+      campaignInput.value = attributionKeys
+        .map((key) => {
+          const value = window.sessionStorage.getItem(`${attributionPrefix}${key}`);
+          return value ? `${key}=${value}` : "";
+        })
+        .filter(Boolean)
+        .join(" | ");
+    }
+  } catch {
+    if (landingPageInput) landingPageInput.value = currentUrl.pathname;
+  }
 
   const setFormNote = (message, state = "neutral") => {
     if (!formNote) return;
@@ -56,6 +110,9 @@ inquiryForms.forEach((inquiryForm) => {
       documents: String(data.get("documents") || "").trim(),
       message: String(data.get("message") || "").trim(),
       website: String(data.get("website") || "").trim(),
+      sourcePage: String(data.get("sourcePage") || "").trim(),
+      landingPage: String(data.get("landingPage") || "").trim(),
+      campaign: String(data.get("campaign") || "").trim(),
     };
 
     if (!payload.name || !payload.email || !payload.message) {

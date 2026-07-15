@@ -581,6 +581,11 @@ h4 {
   align-items: center;
 }
 
+.split > *,
+.page-hero-grid > * {
+  min-width: 0;
+}
+
 .split.reverse {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.86fr);
 }

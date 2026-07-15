@@ -1,0 +1,11 @@
+name,url,type,relevance,editorial_review,buyer_intent,evidence_readiness,cost_risk,status,next_action
+Qmed+,https://qmed.com/add-your-company-page000134.html,screened supplier directory,3,3,3,1,1,evidence-blocked,"Verify applicable ISO/cGMP/FDA or medical-device experience evidence before applying"
+Global Sources,https://www.sellproducts.globalsources.com/RegisterSYP.jsp,B2B sourcing platform,3,2,3,2,2,requires-account,"Check for an existing company account and assign an owner before registration"
+MedicalExpo,https://www.medicalexpo.com/,medical product marketplace,3,2,3,2,3,cost-review,"Request exhibitor options and evaluate qualified-buyer economics"
+Femtech Insider,https://femtechinsider.com/companies/,industry company database,3,2,2,2,0,research-ready,"Prepare the approved 80-word profile and evidence links; obtain approval before submission"
+Suplivia,https://www.suplivia.com/,reviewed women's health manufacturer platform,3,3,2,1,1,evidence-blocked,"Prepare certification profile, catalog, and redacted proof bundle"
+Europages,https://help.europages.com/en/supplier/company-profile-basic-information,B2B company directory,2,1,2,1,1,eligibility-check,"Confirm whether a China entity without EU VAT is eligible before creating an account"
+PLMA,https://www.plmainternational.com/,private-label association and trade show,3,3,3,1,3,cost-review,"Request membership/exhibitor information and estimate meetings before purchase"
+EDANA,https://www.edana.org/membership/who-can-join,nonwovens and hygiene association,3,3,2,1,3,eligibility-check,"Confirm converter or absorbent-hygiene membership eligibility and fees"
+Alibaba,https://suppliers.alibaba.com/,B2B sourcing marketplace,3,1,3,2,3,owner-required,"Only proceed with a dedicated account owner and response SLA"
+Made-in-China,https://en.made-in-china.com/,B2B sourcing marketplace,3,1,3,2,3,owner-required,"Compare verified-supplier cost and lead quality with existing channels"

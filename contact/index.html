@@ -95,12 +95,15 @@
           <div>
             <div class="breadcrumb"><a href="/">Home</a><span>/</span><span>Contact</span></div>
             <p class="eyebrow">Request Quote</p>
-            <h1>Submit a structured RFQ for specs, samples, or OEM pricing.</h1>
+            <h1>Request OEM specs, samples, or pricing.</h1>
             <p class="lead">Use the online form for product specifications, MOQ review, sample planning, private-label packaging, document packs, and production timelines. YUJI replies from the public business inbox.</p>
             <div class="contact-strip"><a href="mailto:info@yujihealth.com">info@yujihealth.com</a><a class="inline-link" href="https://www.linkedin.com/company/yuji-feminine-care/" rel="noopener noreferrer" target="_blank">YUJI company LinkedIn</a><a class="inline-link" href="https://www.linkedin.com/in/anran-an-yuji/" rel="noopener noreferrer" target="_blank">Export contact</a><span>Xi'an, Shaanxi, China</span><span>1-2 business day RFQ review</span></div>
           </div>
           <form class="inquiry-form" data-inquiry-form>
             <label class="honeypot" aria-hidden="true">Website<input name="website" autocomplete="off" tabindex="-1" /></label>
+            <input name="sourcePage" type="hidden" />
+            <input name="landingPage" type="hidden" />
+            <input name="campaign" type="hidden" />
             <div class="form-grid">
               <label>Name<input name="name" autocomplete="name" required /></label>
               <label>Email<input name="email" type="email" autocomplete="email" required /></label>
@@ -109,7 +112,7 @@
               <label>Company<input name="company" autocomplete="organization" /></label>
               <label>Country / market<input name="country" autocomplete="country-name" /></label>
             </div>
-            <label>Product interest<select name="product"><option>Menstrual cups</option><option>Menstrual discs</option><option>Sanitary pads and liners</option><option>Accessories and starter kits</option><option>OEM/ODM mixed program</option></select></label>
+            <label>Product interest<select name="product"><option value="">Select a product line</option><option>Menstrual cups</option><option>Menstrual discs</option><option>Sanitary pads and liners</option><option>Accessories and starter kits</option><option>OEM/ODM mixed program</option></select></label>
             <label>Estimated volume<input name="volume" placeholder="Samples, trial order, or forecast quantity" /></label>
             <div class="form-grid">
               <label>Packaging needs<input name="packaging" placeholder="Pouch, box, leaflet, barcode, kit, languages" /></label>
@@ -117,9 +120,10 @@
             </div>
             <label>Document needs<input name="documents" placeholder="Specs, certificate scans, QC release, carton data" /></label>
             <label>Project message<textarea name="message" rows="6" required placeholder="Target market, quantity, packaging, sample needs, document pack, timeline..."></textarea></label>
+            <p class="form-note">YUJI uses these details only to respond to your B2B inquiry. Do not include consumer or patient health data. See the <a class="inline-link" href="/privacy/">privacy notice</a>.</p>
             <button class="button primary full" type="submit">Submit RFQ online</button>
-            <p class="form-note" data-form-note>Include market, quantity, packaging, and document needs for a faster quotation.</p>
-            <p class="form-note">Need a template? <a class="inline-link" href="/downloads/yuji-feminine-care-rfq-checklist.txt" download>Download the RFQ checklist</a>.</p>
+            <p class="form-note" data-form-note role="status" aria-live="polite" aria-atomic="true">Only name, email, and project message are required. Add more details for a faster quotation.</p>
+            <p class="form-note">Need sourcing material? <a class="inline-link" href="/downloads/yuji-feminine-care-oem-line-sheet.pdf" download>Download the product line PDF</a> or <a class="inline-link" href="/downloads/yuji-feminine-care-rfq-checklist.txt" download>use the RFQ checklist</a>.</p>
           </form>
         </div>
       </section>
@@ -156,6 +160,7 @@
             <li><a href="/quality/evidence/">Evidence pack</a></li>
             <li><a href="/about/">About YUJI</a></li>
             <li><a href="/resources/">Resources</a></li>
+            <li><a href="/privacy/">Privacy</a></li>
             <li><a href="/sitemap.xml">Sitemap</a></li>
           </ul>
         </div>
