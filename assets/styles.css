@@ -225,6 +225,11 @@ h3 {
   font-size: 23px;
 }
 
+.compact-heading {
+  margin-bottom: 12px;
+  font-size: 23px;
+}
+
 h4 {
   margin-bottom: 10px;
   font-size: 17px;
@@ -992,8 +997,10 @@ details p {
   list-style: none;
 }
 
-.footer-inner h4 {
+.footer-inner .footer-heading {
+  margin-bottom: 10px;
   color: #fffaf7;
+  font-size: 17px;
 }
 
 .footer-brand {
