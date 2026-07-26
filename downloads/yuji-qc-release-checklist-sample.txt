@@ -1,0 +1,68 @@
+YUJI Feminine Care OEM — QC Release Checklist (ILLUSTRATIVE FORMAT)
+====================================================================
+Status: Illustrative sample of field categories buyers can request.
+This is NOT a release record for a real production lot, certificate,
+or shipment. Real QC release documents are issued project by project
+after sampling and production approvals.
+
+Company: Xi'an Yuji Biotechnology Co., Ltd. (YUJI)
+Public contact: info@yujihealth.com
+Page: https://yujihealth.com/quality/evidence/
+
+--------------------------------------------------------------------
+A. Order identity (project-specific on real releases)
+--------------------------------------------------------------------
+- Buyer / brand reference: [project]
+- Product category: menstrual cup / menstrual disc / pad / liner / kit
+- Quoted SKU or structure code: [project]
+- Target market / channel: [project]
+- Sample approval reference: [project]
+- Production lot / batch ID: [issued on real release only]
+- Quantity to release: [issued on real release only]
+
+--------------------------------------------------------------------
+B. Product checks (examples by category)
+--------------------------------------------------------------------
+Cups / discs (examples):
+- Material basis confirmed against quoted specification
+- Size / dimensions within agreed tolerance
+- Hardness / feel direction matched to approved sample
+- Visual: flash, color match, surface defects
+- Stem / rim / pull feature as approved
+- Packaging components present (pouch/cover, leaflet, box)
+
+Pads / liners (examples):
+- Length / absorbency direction vs quote
+- Top sheet / back sheet / wrapper vs BOM
+- Retail pack count and language
+- Visual defects and seal integrity
+
+--------------------------------------------------------------------
+C. Process / sterilization / hygiene (when applicable)
+--------------------------------------------------------------------
+- First-article or in-process checkpoint summary available
+- EO sterilization planning / residual records requested for program
+- Microbial / pH / other lab items only if in the quoted scope
+
+--------------------------------------------------------------------
+D. Packaging and export handoff
+--------------------------------------------------------------------
+- Retail pack artwork version approved
+- Carton marks / packing list / quantity check
+- Label / barcode requirements checked for destination
+- Document pack list attached for the quoted market
+
+--------------------------------------------------------------------
+E. Release decision (real documents only)
+--------------------------------------------------------------------
+- QC reviewer: [name/role on real release]
+- Date: [on real release]
+- Result: Released / Hold / Rejected
+- Notes: [project]
+
+--------------------------------------------------------------------
+Buyer note
+--------------------------------------------------------------------
+Request the project-specific QC release, certificate scope scan, and
+material specification with your RFQ:
+https://yujihealth.com/contact/?product=OEM%2FODM%20mixed%20program

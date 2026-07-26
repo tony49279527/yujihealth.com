@@ -1,0 +1,7 @@
+{
+  "enabled": false,
+  "provider": "plausible",
+  "plausibleDomain": "yujihealth.com",
+  "plausibleScriptSrc": "https://plausible.io/js/script.js",
+  "notes": "Keep enabled=false until the owner confirms the analytics account, privacy wording, and deploy. Do not put secrets in this file."
+}

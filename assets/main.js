@@ -47,6 +47,27 @@ document.querySelectorAll("[data-site-nav] a[href]").forEach((link) => {
   }
 });
 
+async function initAnalytics() {
+  try {
+    const response = await fetch("/config/analytics.json", { credentials: "same-origin" });
+    if (!response.ok) return;
+    const config = await response.json();
+    if (!config || config.enabled !== true) return;
+
+    if (config.provider === "plausible" && config.plausibleDomain && config.plausibleScriptSrc) {
+      const script = document.createElement("script");
+      script.defer = true;
+      script.setAttribute("data-domain", config.plausibleDomain);
+      script.src = config.plausibleScriptSrc;
+      document.head.appendChild(script);
+    }
+  } catch {
+    // Analytics is optional and must fail silently.
+  }
+}
+
+initAnalytics();
+
 inquiryForms.forEach((inquiryForm) => {
   const formNote = inquiryForm.querySelector("[data-form-note]");
   const submitButton = inquiryForm.querySelector('button[type="submit"]');

@@ -29,22 +29,79 @@
             "@context": "https://schema.org",
             "@graph": [
                   {
-                        "@type": "WebPage",
+                        "@type": "CollectionPage",
                         "@id": "https://yujihealth.com/quality/evidence/#webpage",
                         "url": "https://yujihealth.com/quality/evidence/",
                         "name": "Quality Evidence & Document Pack | YUJI Feminine Care OEM",
                         "description": "Review YUJI quality evidence for OEM buyers: material files, process records, certificate scans, QC release, packaging files, and claim boundaries.",
                         "inLanguage": "en",
-                        "dateModified": "2026-07-17",
+                        "dateModified": "2026-07-26",
                         "isPartOf": {
                               "@id": "https://yujihealth.com/#website"
                         },
                         "publisher": {
                               "@id": "https://yujihealth.com/#organization"
                         },
+                        "mainEntity": {
+                              "@id": "https://yujihealth.com/quality/evidence/#evidence-categories"
+                        },
                         "breadcrumb": {
                               "@id": "https://yujihealth.com/quality/evidence/#breadcrumb"
                         }
+                  },
+                  {
+                        "@type": "ItemList",
+                        "@id": "https://yujihealth.com/quality/evidence/#evidence-categories",
+                        "name": "YUJI quality evidence review categories",
+                        "numberOfItems": 4,
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Material Specification and Supplier Basis",
+                                    "url": "https://yujihealth.com/quality/evidence/#material"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Product Dimensions, Hardness, and Capacity Files",
+                                    "url": "https://yujihealth.com/quality/evidence/#product"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "In-Process Quality Control Checkpoints",
+                                    "url": "https://yujihealth.com/quality/evidence/#process"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 4,
+                                    "name": "QC Release Records and Export Handoff Data",
+                                    "url": "https://yujihealth.com/quality/evidence/#release"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "FAQPage",
+                        "@id": "https://yujihealth.com/quality/evidence/#faq",
+                        "mainEntity": [
+                              {
+                                    "@type": "Question",
+                                    "name": "Which quality documents can OEM buyers request before placing an order?",
+                                    "acceptedAnswer": {
+                                          "@type": "Answer",
+                                          "text": "Buyers can request material specification sheets, product dimension and hardness data, in-process inspection protocols, certificate scope summaries, and QC release checklist records."
+                                    }
+                              },
+                              {
+                                    "@type": "Question",
+                                    "name": "Are compliance claims and market registration handled by YUJI?",
+                                    "acceptedAnswer": {
+                                          "@type": "Answer",
+                                          "text": "YUJI provides verified factory quality management system records and product test summaries. Local importer registration, market-specific label compliance, and advertising claims remain the responsibility of the brand owner or importer."
+                                    }
+                              }
+                        ]
                   },
                   {
                         "@type": "BreadcrumbList",
@@ -94,16 +151,45 @@
         <div class="wrap">
           <div class="section-head"><div><p class="eyebrow">Evidence Matrix</p><h2>Ask for records at the same point you compare price.</h2></div><p>A lower quote is not useful if the product scope, material basis, packaging files, and compliance boundary are unclear.</p></div>
           <div class="evidence-list">
-            <article><strong>Material</strong><h3>Specification and supplier basis</h3><span>Useful for silicone cups and discs, pad materials, liners, wipes, pouches, cleaning kits, and packaging bills of material.</span></article>
-            <article><strong>Product</strong><h3>Dimensions, capacity, hardness, and pack fit</h3><span>Request the exact product format being quoted, not a generic category description or stock catalog image.</span></article>
-            <article><strong>Process</strong><h3>First-article and in-process checks</h3><span>Review how color, dimensions, hardness, pH, microbial, EO residual, visual inspection, and packaging checks apply by product type.</span></article>
-            <article><strong>Release</strong><h3>QC release and export handoff records</h3><span>Final inspection, quantity checks, carton labels, packing list, and release records help buyers confirm what ships.</span></article>
+            <article id="material"><strong>Material</strong><h3>Specification and supplier basis</h3><span>Useful for silicone cups and discs, pad materials, liners, wipes, pouches, cleaning kits, and packaging bills of material.</span></article>
+            <article id="product"><strong>Product</strong><h3>Dimensions, capacity, hardness, and pack fit</h3><span>Request the exact product format being quoted, not a generic category description or stock catalog image.</span></article>
+            <article id="process"><strong>Process</strong><h3>First-article and in-process checks</h3><span>Review how color, dimensions, hardness, pH, microbial, EO residual, visual inspection, and packaging checks apply by product type.</span></article>
+            <article id="release"><strong>Release</strong><h3>QC release and export handoff records</h3><span>Final inspection, quantity checks, carton labels, packing list, and release records help buyers confirm what ships.</span></article>
           </div>
-          <p class="review-note">This page explains which evidence categories buyers can request. Public redacted certificate scans and QC sample pages are published only after YUJI approves the current file, issuing body, scope, and expiry details for each document.</p>
+          <p class="review-note">This page explains which evidence categories buyers can request. Public redacted certificate scans and real QC lot samples are published only after YUJI approves the current file, issuing body, scope, and expiry details. Browse the matching buyer guides in <a class="inline-link" href="/resources/">Resources</a> before requesting a full document pack.</p>
         </div>
       </section>
 
       <section class="section alt">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Public Samples</p>
+              <h2>Downloadable samples buyers can review before the RFQ.</h2>
+            </div>
+            <p>Certificate cover scans and redacted real QC lot pages will appear here after approval. Until then, use the illustrative QC field checklist and the buyer line sheet.</p>
+          </div>
+          <div class="grid-3">
+            <article class="card">
+              <h3>QC release checklist (illustrative)</h3>
+              <p>Shows the field categories typically reviewed before release. Clearly labeled as a format sample, not a real production lot record.</p>
+              <a class="card-link" href="/downloads/yuji-qc-release-checklist-sample.txt" download>Download QC field sample</a>
+            </article>
+            <article class="card">
+              <h3>OEM line sheet PDF</h3>
+              <p>Eight-page buyer overview covering product lines, project stages, evidence requests, and RFQ inputs.</p>
+              <a class="card-link" href="/downloads/yuji-feminine-care-oem-line-sheet.pdf" download>Download line sheet</a>
+            </article>
+            <article class="card">
+              <h3>Certificate / real QC samples</h3>
+              <p>Redacted certificate covers and real QC release pages: pending approved source files from YUJI operations.</p>
+              <span class="review-note">Status: waiting for approved PDFs</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
         <div class="wrap split">
           <div>
             <p class="eyebrow">Certificate Review</p>
@@ -119,7 +205,7 @@
         </div>
       </section>
 
-      <section class="section">
+      <section class="section alt">
         <div class="wrap">
           <div class="section-head"><div><p class="eyebrow">RFQ Pack</p><h2>Use one document list for products, packaging, and compliance.</h2></div><p>The checklist keeps sourcing conversations concrete and reduces the chance of a generic price-only reply.</p></div>
           <div class="grid-3">
@@ -133,6 +219,19 @@
             <p>Share this checklist internally before asking for MOQ, sample timing, private-label packaging, or compliance documents.</p>
             <div class="action-row"><a class="button secondary" href="/resources/feminine-care-oem-rfq-checklist/">Open RFQ checklist</a><a class="button secondary" href="/downloads/yuji-feminine-care-rfq-checklist.txt" download>Download text copy</a><a class="button primary" href="/contact/?product=OEM%2FODM%20mixed%20program">Send completed RFQ</a></div>
           </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head narrow"><p class="eyebrow">Buyer FAQ</p><h2>Questions procurement teams ask before requesting files.</h2></div>
+          <details>
+            <summary>Which quality documents can OEM buyers request before placing an order?</summary>
+            <p>Buyers can request material specification sheets, product dimension and hardness data, in-process inspection protocols, certificate scope summaries, and QC release checklist records.</p>
+          </details>
+          <details>
+            <summary>Are compliance claims and market registration handled by YUJI?</summary>
+            <p>YUJI provides verified factory quality management system records and product test summaries. Local importer registration, market-specific label compliance, and advertising claims remain the responsibility of the brand owner or importer.</p>
+          </details>
         </div>
       </section>
     </main>

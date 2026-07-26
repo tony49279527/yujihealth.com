@@ -28,16 +28,49 @@
             "@context": "https://schema.org",
             "@graph": [
                   {
-                        "@type": "WebPage",
+                        "@type": "CollectionPage",
                         "@id": "https://yujihealth.com/applications/#webpage",
                         "url": "https://yujihealth.com/applications/",
                         "name": "Feminine Care OEM for Amazon, DTC & Retail | YUJI",
                         "description": "Match YUJI feminine care OEM programs to Amazon, DTC, pharmacy, and distributor launches.",
                         "inLanguage": "en",
-                        "dateModified": "2026-07-17",
+                        "dateModified": "2026-07-25",
                         "isPartOf": { "@id": "https://yujihealth.com/#website" },
                         "publisher": { "@id": "https://yujihealth.com/#organization" },
+                        "mainEntity": { "@id": "https://yujihealth.com/applications/#channels" },
                         "breadcrumb": { "@id": "https://yujihealth.com/applications/#breadcrumb" }
+                  },
+                  {
+                        "@type": "ItemList",
+                        "@id": "https://yujihealth.com/applications/#channels",
+                        "name": "YUJI feminine care OEM launch channels",
+                        "numberOfItems": 4,
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Amazon / Marketplace OEM Program",
+                                    "url": "https://yujihealth.com/products/menstrual-cups/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "DTC Brand OEM Program",
+                                    "url": "https://yujihealth.com/resources/menstrual-cup-vs-disc-oem/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Pharmacy / Retail OEM Program",
+                                    "url": "https://yujihealth.com/quality/evidence/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 4,
+                                    "name": "Distributor Bulk OEM Program",
+                                    "url": "https://yujihealth.com/products/pads-liners/"
+                              }
+                        ]
                   },
                   {
                         "@type": "BreadcrumbList",

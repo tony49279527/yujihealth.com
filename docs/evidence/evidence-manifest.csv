@@ -1,0 +1,5 @@
+asset_id,asset_type,title,claim_supported,source_date,expiry_date,owner,public_scope,redaction_required,approval_status,file_path
+E-ILLUS-001,qc-record,Illustrative QC release checklist fields,Shows which QC release fields buyers can request; not a real lot release,2026-07-26,n/a,Marketing,website,no,approved-public,downloads/yuji-qc-release-checklist-sample.txt
+E-PENDING-001,certificate,Pending system or product certificate sample,Supports certificate-scope review claims when approved,2026-07-26,n/a,Operations,none,yes,unreviewed,pending
+E-PENDING-002,qc-record,Pending redacted real QC release sample,Supports QC release evidence when approved,2026-07-26,n/a,Quality,none,yes,unreviewed,pending
+E-PENDING-003,specification,Pending material or product spec cover sample,Supports material or specification evidence when approved,2026-07-26,n/a,Quality,none,yes,unreviewed,pending
