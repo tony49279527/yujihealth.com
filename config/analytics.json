@@ -1,5 +1,5 @@
 {
-  "enabled": false,
+  "enabled": true,
   "provider": "plausible",
   "plausibleDomain": "yujihealth.com",
   "plausibleScriptSrc": "https://plausible.io/js/script.js",
