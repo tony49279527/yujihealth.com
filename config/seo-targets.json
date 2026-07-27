@@ -88,12 +88,56 @@
       "label": "Private Label Pads Guide"
     },
     {
+      "path": "/resources/best-menstrual-cup-manufacturers-china/",
+      "label": "Best Menstrual Cup Manufacturers China"
+    },
+    {
+      "path": "/resources/best-sanitary-pad-oem-china/",
+      "label": "Best Sanitary Pad OEM China"
+    },
+    {
+      "path": "/resources/best-feminine-care-private-label/",
+      "label": "Best Feminine Care Private Label"
+    },
+    {
+      "path": "/resources/how-to-choose-menstrual-cup-oem/",
+      "label": "How to Choose Menstrual Cup OEM"
+    },
+    {
+      "path": "/resources/how-to-start-private-label-pad-brand/",
+      "label": "How to Start Private Label Pad Brand"
+    },
+    {
       "path": "/contact/",
       "label": "Contact"
     },
     {
       "path": "/privacy/",
       "label": "Privacy"
+    },
+    {
+      "path": "/terms/",
+      "label": "Terms"
+    },
+    {
+      "path": "/zh/",
+      "label": "Chinese Home"
+    },
+    {
+      "path": "/zh/products/",
+      "label": "Chinese Products"
+    },
+    {
+      "path": "/zh/oem-odm/",
+      "label": "Chinese OEM/ODM"
+    },
+    {
+      "path": "/zh/quality/",
+      "label": "Chinese Quality"
+    },
+    {
+      "path": "/zh/contact/",
+      "label": "Chinese Contact"
     }
   ]
 }
