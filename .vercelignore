@@ -1,0 +1,15 @@
+.vercel
+.claude
+.workbuddy
+.agents
+.codex
+.github
+docs
+gpt-site
+output
+reports
+scripts
+tmp
+node_modules
+.env*
+**/.DS_Store

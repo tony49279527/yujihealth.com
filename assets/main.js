@@ -157,6 +157,16 @@ inquiryForms.forEach((inquiryForm) => {
         throw new Error("Contact endpoint unavailable");
       }
 
+      if (typeof window.plausible === "function") {
+        window.plausible("RFQ Submit", {
+          props: {
+            product: payload.product || "OEM/ODM program",
+            landingPage: payload.landingPage || "Unknown",
+            sourcePage: payload.sourcePage || "Direct",
+          },
+        });
+      }
+
       inquiryForm.reset();
       setFormNote("Inquiry received. YUJI will review the details and reply from info@yujihealth.com.", "success");
     } catch (error) {
