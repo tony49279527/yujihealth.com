@@ -112,9 +112,25 @@ export default async function handler(request, response) {
     }),
   });
 
+  const resendResult = await resendResponse.json().catch(() => ({}));
+
   if (!resendResponse.ok) {
+    console.error(JSON.stringify({
+      event: "rfq_provider_rejected",
+      provider: "resend",
+      status: resendResponse.status,
+      recordedAt: new Date().toISOString(),
+    }));
     return json(response, 502, { error: "Email delivery failed." });
   }
 
-  return json(response, 200, { ok: true });
+  console.info(JSON.stringify({
+    event: "rfq_provider_accepted",
+    provider: "resend",
+    providerMessageId: clean(resendResult.id, 200) || "not-returned",
+    recordedAt: new Date().toISOString(),
+  }));
+
+  response.setHeader("X-RFQ-Status", "accepted");
+  return json(response, 202, { ok: true, status: "accepted" });
 }

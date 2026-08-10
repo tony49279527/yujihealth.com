@@ -53,7 +53,7 @@
             "url": "https://yujihealth.com/zh/contact/",
             "name": "获取报价 | 裕吉生物 女性护理 OEM",
             "inLanguage": "zh-CN",
-            "dateModified": "2026-07-28",
+            "dateModified": "2026-08-10",
             "isPartOf": { "@id": "https://yujihealth.com/#website" },
             "about": { "@id": "https://yujihealth.com/#organization" }
           }
@@ -88,7 +88,7 @@
           <div>
             <p class="eyebrow">获取报价</p>
             <h1>获取产品规格、样品或报价</h1>
-            <p class="lead">通过邮件发送询价信息，裕吉生物将在 1–2 个工作日内回复产品规格、MOQ 参考和下一步方案。英文询价表单同样可用。</p>
+            <p class="lead">在线填写中文询价，或通过邮件发送询价信息。裕吉生物会根据产品、市场、数量、包装和文件需求准备规格、MOQ 参考及下一步方案。</p>
             <div class="contact-strip">
               <a href="mailto:info@yujihealth.com">info@yujihealth.com</a>
               <a class="inline-link" href="https://www.linkedin.com/company/yuji-feminine-care/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
@@ -114,10 +114,48 @@
               <li>期望的样品截止日期和量产时间表</li>
             </ul>
             <div class="action-row" style="margin-top:16px">
-              <a class="button primary" href="mailto:info@yujihealth.com">发送邮件</a>
+              <a class="button primary" href="#online-rfq">在线填写询价</a>
               <a class="button secondary" href="/contact/">使用英文询价表单</a>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="online-rfq">
+        <div class="wrap">
+          <div class="section-head narrow">
+            <div>
+              <p class="eyebrow">中文询价表单</p>
+              <h2>在线提交询价，信息完整即可更快报价。</h2>
+            </div>
+            <p>如更习惯邮件，可继续发送至 <a class="inline-link" href="mailto:info@yujihealth.com">info@yujihealth.com</a>。表单提交后，裕吉生物会从同一邮箱回复。</p>
+          </div>
+          <form class="inquiry-form" data-inquiry-form>
+            <label class="honeypot" aria-hidden="true">网站<input name="website" autocomplete="off" tabindex="-1" /></label>
+            <input name="sourcePage" type="hidden" />
+            <input name="landingPage" type="hidden" />
+            <input name="campaign" type="hidden" />
+            <div class="form-grid">
+              <label>姓名<input name="name" autocomplete="name" required /></label>
+              <label>邮箱<input name="email" type="email" autocomplete="email" required /></label>
+            </div>
+            <div class="form-grid">
+              <label>公司<input name="company" autocomplete="organization" /></label>
+              <label>国家 / 市场<input name="country" autocomplete="country-name" /></label>
+            </div>
+            <label>感兴趣的产品<select name="product"><option value="">选择产品线</option><option value="Menstrual cups">月经杯</option><option value="Menstrual discs">经期盘</option><option value="Sanitary pads and liners">卫生巾 / 护垫</option><option value="Accessories and starter kits">配件和入门套装</option><option value="OEM/ODM mixed program">OEM/ODM 混合项目</option></select></label>
+            <label>预估数量<input name="volume" placeholder="样品、试单量或预测量" /></label>
+            <div class="form-grid">
+              <label>包装需求<input name="packaging" placeholder="袋、盒、说明书、条码、套装、语言" /></label>
+              <label>时间线<input name="timeline" placeholder="样品日期、上市时间或交期需求" /></label>
+            </div>
+            <label>文件需求<input name="documents" placeholder="规格、证书扫描件、QC 放行、纸箱数据" /></label>
+            <label>项目说明<textarea name="message" rows="6" required placeholder="目标市场、数量、包装、样品、文件包和时间线..."></textarea></label>
+            <p class="form-note">YUJI 仅使用这些信息回复 B2B 询价。请不要填写消费者或患者健康数据。详见<a class="inline-link" href="/privacy/">隐私声明</a>。</p>
+            <button class="button primary full" type="submit">在线提交中文询价</button>
+            <p class="form-note" data-form-note role="status" aria-live="polite" aria-atomic="true">仅姓名、邮箱和项目说明为必填。补充市场、数量、包装和文件需求可加快报价。</p>
+            <p class="form-note">采购资料：<a class="inline-link" href="/downloads/yuji-feminine-care-oem-line-sheet.pdf" download>下载产品线 PDF</a>，或<a class="inline-link" href="/resources/feminine-care-oem-rfq-checklist/">打开 RFQ 清单</a>。</p>
+          </form>
         </div>
       </section>
 

@@ -4,6 +4,23 @@ const inquiryForms = document.querySelectorAll("[data-inquiry-form]");
 const attributionKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 const attributionPrefix = "yuji:attribution:";
 const currentUrl = new URL(window.location.href);
+const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+const isZh = (document.documentElement.lang || "en").toLowerCase().startsWith("zh");
+const analyticsProducts = new Set([
+  "Menstrual cup OEM",
+  "Menstrual cups",
+  "Menstrual discs",
+  "Sanitary pads and liners",
+  "Accessories and starter kits",
+  "OEM/ODM mixed program",
+  "Quality documents",
+]);
+const analyticsProduct = (value) => analyticsProducts.has(value) ? value : "unspecified";
+
+const trackEvent = (name, props = {}) => {
+  if (typeof window.plausible !== "function") return;
+  window.plausible(name, { props });
+};
 
 try {
   if (!window.sessionStorage.getItem(`${attributionPrefix}landing_page`)) {
@@ -37,7 +54,6 @@ if (navToggle && siteNav) {
   });
 }
 
-const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
 document.querySelectorAll("[data-site-nav] a[href]").forEach((link) => {
   const href = link.getAttribute("href");
   if (!href || href.startsWith("#")) return;
@@ -55,11 +71,18 @@ async function initAnalytics() {
     if (!config || config.enabled !== true) return;
 
     if (config.provider === "plausible" && config.plausibleDomain && config.plausibleScriptSrc) {
+      window.plausible = window.plausible || function plausible() {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
       const script = document.createElement("script");
       script.defer = true;
       script.setAttribute("data-domain", config.plausibleDomain);
       script.src = config.plausibleScriptSrc;
       document.head.appendChild(script);
+
+      if (currentPath === "/contact" || currentPath === "/zh/contact") {
+        trackEvent("contact_arrival", { page: currentPath });
+      }
     }
   } catch {
     // Analytics is optional and must fail silently.
@@ -67,6 +90,17 @@ async function initAnalytics() {
 }
 
 initAnalytics();
+
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return;
+  const link = event.target.closest('a[href^="/contact/"]');
+  if (!link) return;
+  const destination = new URL(link.href, window.location.origin);
+  trackEvent("product_cta", {
+    sourcePage: currentPath,
+    product: analyticsProduct(destination.searchParams.get("product")),
+  });
+});
 
 inquiryForms.forEach((inquiryForm) => {
   const formNote = inquiryForm.querySelector("[data-form-note]");
@@ -77,6 +111,7 @@ inquiryForms.forEach((inquiryForm) => {
   const landingPageInput = inquiryForm.querySelector('input[name="landingPage"]');
   const campaignInput = inquiryForm.querySelector('input[name="campaign"]');
   const requestedProduct = new URL(window.location.href).searchParams.get("product");
+  let rfqStarted = false;
 
   if (productSelect && requestedProduct) {
     const hasMatchingOption = Array.from(productSelect.options).some((option) => option.value === requestedProduct);
@@ -116,6 +151,17 @@ inquiryForms.forEach((inquiryForm) => {
     formNote.classList.toggle("is-error", state === "error");
   };
 
+  inquiryForm.addEventListener("input", (event) => {
+    if (rfqStarted || !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement)) return;
+    if (event.target.name === "website" || !String(event.target.value || "").trim()) return;
+    rfqStarted = true;
+    trackEvent("rfq_start", {
+      product: analyticsProduct(productSelect?.value || requestedProduct),
+      landingPage: landingPageInput?.value || currentPath,
+      sourcePage: sourcePageInput?.value || "direct",
+    });
+  });
+
   inquiryForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(inquiryForm);
@@ -137,16 +183,22 @@ inquiryForms.forEach((inquiryForm) => {
     };
 
     if (!payload.name || !payload.email || !payload.message) {
-      setFormNote("Please add your name, email, and project message before sending.", "error");
+      setFormNote(isZh ? "请填写姓名、邮箱和项目说明后再发送。" : "Please add your name, email, and project message before sending.", "error");
       return;
     }
 
     if (submitButton) {
       submitButton.disabled = true;
-      submitButton.textContent = "Sending RFQ...";
+      submitButton.textContent = isZh ? "正在发送询价..." : "Sending RFQ...";
     }
 
     try {
+      trackEvent("rfq_submit_client", {
+        product: analyticsProduct(payload.product),
+        landingPage: payload.landingPage || currentPath,
+        sourcePage: payload.sourcePage || "direct",
+      });
+
       const response = await fetch("/api/contact/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -157,20 +209,19 @@ inquiryForms.forEach((inquiryForm) => {
         throw new Error("Contact endpoint unavailable");
       }
 
-      if (typeof window.plausible === "function") {
-        window.plausible("RFQ Submit", {
-          props: {
-            product: payload.product || "OEM/ODM program",
-            landingPage: payload.landingPage || "Unknown",
-            sourcePage: payload.sourcePage || "Direct",
-          },
-        });
-      }
+      const result = await response.json().catch(() => ({}));
+      trackEvent("rfq_provider_accepted", {
+        product: analyticsProduct(payload.product),
+        landingPage: payload.landingPage || currentPath,
+        sourcePage: payload.sourcePage || "direct",
+        status: result.status || "accepted",
+      });
 
       inquiryForm.reset();
-      setFormNote("Inquiry received. YUJI will review the details and reply from info@yujihealth.com.", "success");
+      rfqStarted = false;
+      setFormNote(isZh ? "询价已由邮件服务接受投递。裕吉生物会审阅信息，并从业务邮箱回复。" : "Inquiry accepted for email delivery. YUJI will review the details and reply from its business inbox.", "success");
     } catch (error) {
-      setFormNote("Online submission is temporarily unavailable. Email info@yujihealth.com with your market, volume, packaging, and document needs.", "error");
+      setFormNote(isZh ? "在线提交暂时不可用。请将市场、数量、包装和文件需求发送至 info@yujihealth.com。" : "Online submission is temporarily unavailable. Email info@yujihealth.com with your market, volume, packaging, and document needs.", "error");
     } finally {
       if (submitButton) {
         submitButton.disabled = false;
