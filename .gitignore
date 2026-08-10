@@ -4,6 +4,8 @@
 !.env.example
 node_modules/
 reports/
+docs/evidence/inbox/*
+!docs/evidence/inbox/README.md
 .gsc-verification-file
 .workbuddy/
 .claude/
