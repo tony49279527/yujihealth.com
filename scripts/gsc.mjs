@@ -152,11 +152,14 @@ async function api(method, url, body) {
   let lastError;
 
   for (let attempt = 1; attempt <= 3; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
     try {
       const response = await fetch(url, {
         method,
         headers,
-        body: body ? JSON.stringify(body) : undefined
+        body: body ? JSON.stringify(body) : undefined,
+        signal: controller.signal
       });
       const json = await response.json().catch(() => ({}));
       if (!response.ok || json.error) {
@@ -168,8 +171,15 @@ async function api(method, url, body) {
         return json;
       }
     } catch (error) {
-      lastError = error;
-      if (/403|insufficient|PERMISSION_DENIED/i.test(error.message || "")) throw error;
+      if (/^GSC API\b/.test(error.message || "")) {
+        lastError = error;
+        if (/403|insufficient|PERMISSION_DENIED/i.test(error.message || "")) throw error;
+      } else {
+        const reason = error.cause?.code || error.cause?.message || error.message || String(error);
+        lastError = new Error(`GSC API ${method} ${url} network failure on attempt ${attempt}/3: ${reason}`);
+      }
+    } finally {
+      clearTimeout(timeout);
     }
     if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 2500));
   }
