@@ -55,3 +55,11 @@ Low-volume observations must not be converted into a CTR, ranking, lead, or reve
 - Named English and Chinese sales owners plus private qualification/sample/quote/win records.
 
 Existing scheduled reviews remain active for 2026-09-10 and 2026-10-10. An earlier 7-day automation creation was attempted on 2026-08-12, but the automation service did not confirm creation; no duplicate was created or reported as successful.
+
+## Alternative-path work completed — 2026-08-12
+
+- Network isolation: direct IPv4 connections to Search Console and PageSpeed endpoints timed out; IPv6 was unreachable. Search Console in the available browser and a local Lighthouse run also timed out. The alternative is to run the existing bounded GSC script and local Lighthouse from another approved network at the scheduled review, not to reuse an old score as current evidence.
+- Git delivery: GitHub SSH authentication was unavailable on this machine, so SSH could not replace the timing-out HTTPS push. The local commit remains ahead until one authenticated transport succeeds.
+- Sender diagnosis: DNS shows Cloudflare Email Routing MX and an apex SPF policy for that route, but no returned DMARC record and no checked YUJI Resend/DKIM record. A provider-verified YUJI sending subdomain is required before changing `RESEND_FROM`.
+- Evidence sourcing: repository and connected Google Drive searches found no certificate, test report, real QC release, specification, facility, shipment, or regulatory source for the seven pending records. The dated search record and controlled intake path are in `docs/evidence/evidence-source-search-2026-08-12.md`.
+- Sales-stage fallback: `docs/operations/rfq-stage-register-template.csv` now defines the minimum RFQ-to-win fields. It must be copied to an access-controlled company system; real lead rows must never be committed to Git.

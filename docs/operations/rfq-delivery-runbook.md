@@ -7,6 +7,21 @@
 - Inbox placement was inconsistent: the pre-release test reached Inbox; the post-release test reached Spam.
 - The configured sender domain is not `yujihealth.com`. It authenticated for that different domain, so delivery works, but the public brand/sender alignment is not final.
 
+## DNS diagnosis — 2026-08-12
+
+- `yujihealth.com` publishes Cloudflare Email Routing MX records.
+- The apex SPF record is `v=spf1 include:_spf.mx.cloudflare.net ~all`; this authorizes the current forwarding route, not a third-party transactional sender by itself.
+- No DMARC TXT record was returned for `_dmarc.yujihealth.com`.
+- No Resend/DKIM record was returned for the checked YUJI selectors/subdomain.
+
+Therefore, changing only the visible From address to `info@yujihealth.com` is not a safe fix. The provider-issued sending-domain records must be verified first. Do not replace the existing SPF record with a second SPF TXT record; merge only the exact provider authorization under DNS-owner review, or use a dedicated sending subdomain.
+
+## CRM-light fallback
+
+Until a CRM or approved sales system is connected, copy `docs/operations/rfq-stage-register-template.csv` into an access-controlled company Sheet or other private system and maintain the live register there. Never put real lead rows into Git. Use an internal inquiry ID and bounded stage values; do not paste RFQ message text, health information, prices, certificates, customer documents, or unnecessary personal data into the register.
+
+Update the record independently at these checkpoints: provider accepted, mailbox placement, qualified/unqualified, sample step, quote step, won/lost. Analytics events remain aggregate and must not replace this sales-owned record.
+
 ## Required owner setup
 
 1. In the approved email provider, add a YUJI-controlled sending subdomain such as `mail.yujihealth.com` or another domain selected by Operations.

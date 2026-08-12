@@ -1,0 +1,2 @@
+inquiry_id,received_at,landing_page,source,product_line,target_market,delivery_status,mailbox_placement,qualified_status,sample_status,quote_status,outcome_status,owner,first_response_at,next_action_at,notes
+EXAMPLE-DO-NOT-USE,2026-08-12T00:00:00Z,/contact/,direct,example,example,example,example,example,example,example,example,unassigned,,,Copy this template to an approved private system and delete this row before use; do not store RFQ text or sensitive personal or health data.
