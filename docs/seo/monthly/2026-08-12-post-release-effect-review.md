@@ -23,12 +23,17 @@ This is an evidence boundary, not a claim that the optimization succeeded commer
 - Plausible's dashboard also timed out from the available browser session, so account ownership and event receipt could not be verified.
 - These failures prevent a new outcome read; they do not indicate that yujihealth.com itself is unavailable. The production homepage returned HTTP 200.
 
-## Additional improvements prepared in this review
+## Additional improvements released in this review
 
-1. Add a branded static `404.html` with genuine recovery paths to Products, Quality Evidence, the RFQ checklist, Contact, and Chinese Home. The response must remain HTTP 404 and `noindex, follow`.
-2. Remove `Product` JSON-LD from three product-family/RFQ pages. They describe configurable ranges rather than one buyable, evidence-approved SKU, and no Offer is present. Accurate WebPage, BreadcrumbList, and visible FAQ markup remain.
-3. Add `seo-audit` to `.vercelignore`. One internal priority backlog CSV was publicly accessible even though `docs` and reports were already excluded; internal audit artifacts should remain in the repository but outside the website deployment.
-4. Improve GSC network-error diagnostics and bounded timeout handling.
+Production release `1094319` completed the following:
+
+1. Added a branded static `404.html` with genuine recovery paths to Products, Quality Evidence, the RFQ checklist, Contact, and Chinese Home. An unknown production URL returns HTTP 404 with this body and `noindex, follow`.
+2. Removed `Product` JSON-LD from three product-family/RFQ pages. They describe configurable ranges rather than one buyable, evidence-approved SKU, and no Offer is present. Accurate WebPage, BreadcrumbList, and visible FAQ markup remain.
+3. Added `seo-audit` to `.vercelignore`. The previously public internal priority backlog CSV now returns HTTP 404, while the repository record remains intact.
+4. Improved GSC network-error diagnostics and bounded timeout handling. The failed retry now identifies `ETIMEDOUT`, the endpoint, and attempt count.
+5. Revalidated all 30 sitemap URLs against the exact release body; HTTP, canonical, H1, JSON-LD, visible FAQ parity, and high-risk claim scans passed.
+
+The post-release PageSpeed retry could not complete because the external PSI request also failed. This does not override the successful production HTTP/body validation or the earlier 97–100 mobile lab scores; it is recorded as unavailable rather than reused as a new measurement.
 
 ## Measurement rule
 
