@@ -63,3 +63,10 @@ Existing scheduled reviews remain active for 2026-09-10 and 2026-10-10. An earli
 - Sender diagnosis: DNS shows Cloudflare Email Routing MX and an apex SPF policy for that route, but no returned DMARC record and no checked YUJI Resend/DKIM record. A provider-verified YUJI sending subdomain is required before changing `RESEND_FROM`.
 - Evidence sourcing: repository and connected Google Drive searches found no certificate, test report, real QC release, specification, facility, shipment, or regulatory source for the seven pending records. The dated search record and controlled intake path are in `docs/evidence/evidence-source-search-2026-08-12.md`.
 - Sales-stage fallback: `docs/operations/rfq-stage-register-template.csv` now defines the minimum RFQ-to-win fields. It must be copied to an access-controlled company system; real lead rows must never be committed to Git.
+
+## Measurement and RFQ hardening — 2026-08-12
+
+- Plausible loading is now disabled because account ownership, domain access, event receipt, retention, and export responsibility could not be verified. Privacy copy states the same current status. Dormant bounded event code remains available for a reviewed future re-enable; no third-party script loads while disabled.
+- A private, unshared native Google Sheet named `YUJI Private RFQ Stage Register` was created and read back successfully. It preserves the 16 approved fields, dates, frozen header, native table/filter behavior, and dropdown validation for delivery, placement, qualification, sample, quote, and outcome stages. It contains no real lead data.
+- The contact API now generates a non-personal inquiry ID, returns it in `X-RFQ-ID` and accepted JSON, and logs it with provider status. The provider request is capped at 12 seconds and has explicit timeout/network error handling. The frontend shows the accepted reference to support reconciliation.
+- Mock-only tests passed for provider acceptance, provider rejection, and network failure without transmitting a real inquiry. The 30-page RFQ journey audit still reports zero errors and zero warnings.

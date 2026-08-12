@@ -219,7 +219,13 @@ inquiryForms.forEach((inquiryForm) => {
 
       inquiryForm.reset();
       rfqStarted = false;
-      setFormNote(isZh ? "询价已由邮件服务接受投递。裕吉生物会审阅信息，并从业务邮箱回复。" : "Inquiry accepted for email delivery. YUJI will review the details and reply from its business inbox.", "success");
+      const inquiryReference = result.inquiryId ? ` ${isZh ? "参考号" : "Reference"}: ${result.inquiryId}.` : "";
+      setFormNote(
+        (isZh
+          ? "询价已由邮件服务接受投递。裕吉生物会审阅信息，并从业务邮箱回复。"
+          : "Inquiry accepted for email delivery. YUJI will review the details and reply from its business inbox.") + inquiryReference,
+        "success",
+      );
     } catch (error) {
       setFormNote(isZh ? "在线提交暂时不可用。请将市场、数量、包装和文件需求发送至 info@yujihealth.com。" : "Online submission is temporarily unavailable. Email info@yujihealth.com with your market, volume, packaging, and document needs.", "error");
     } finally {

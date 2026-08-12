@@ -22,6 +22,10 @@ Until a CRM or approved sales system is connected, copy `docs/operations/rfq-sta
 
 Update the record independently at these checkpoints: provider accepted, mailbox placement, qualified/unqualified, sample step, quote step, won/lost. Analytics events remain aggregate and must not replace this sales-owned record.
 
+Implementation status, 2026-08-12: an access-controlled native Google Sheet named `YUJI Private RFQ Stage Register` was created and verified as not shared. It contains the 16 approved fields, frozen header, date formatting, and controlled dropdown values. The example row must be deleted before the first real inquiry is recorded. Keep the live Sheet URL out of public website content and assign named English and Chinese owners in the Sheet before using stage-time metrics.
+
+The API now issues a non-personal `X-RFQ-ID` for every request, includes the same ID in accepted responses and provider logs, and limits the provider call to 12 seconds. The browser displays the accepted inquiry reference so Sales can reconcile a buyer report with server logs without putting RFQ text into analytics.
+
 ## Required owner setup
 
 1. In the approved email provider, add a YUJI-controlled sending subdomain such as `mail.yujihealth.com` or another domain selected by Operations.

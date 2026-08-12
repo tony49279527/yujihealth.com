@@ -1,5 +1,6 @@
 const DEFAULT_PUBLIC_EMAIL = "info@yujihealth.com";
 const DEFAULT_INQUIRY_TO = DEFAULT_PUBLIC_EMAIL;
+const PROVIDER_TIMEOUT_MS = 12000;
 
 const json = (response, statusCode, body) => {
   response.statusCode = statusCode;
@@ -47,6 +48,9 @@ const buildInquiryText = (payload, publicEmail) => [
 ].join("\n");
 
 export default async function handler(request, response) {
+  const inquiryId = globalThis.crypto?.randomUUID?.() || `rfq-${Date.now().toString(36)}`;
+  response.setHeader("X-RFQ-ID", inquiryId);
+
   if (request.method === "OPTIONS") {
     response.setHeader("Allow", "POST, OPTIONS");
     return json(response, 204, {});
@@ -97,26 +101,45 @@ export default async function handler(request, response) {
   const from = process.env.RESEND_FROM || `YUJI Website <${publicEmail}>`;
   const subjectParts = [payload.product || "OEM/ODM", payload.company || payload.country || payload.name].filter(Boolean);
 
-  const resendResponse = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: payload.email,
-      subject: `YUJI RFQ: ${subjectParts.join(" - ")}`,
-      text: buildInquiryText(payload, publicEmail),
-    }),
-  });
+  const controller = new AbortController();
+  const providerTimeout = setTimeout(() => controller.abort(), PROVIDER_TIMEOUT_MS);
+  let resendResponse;
+
+  try {
+    resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: payload.email,
+        subject: `YUJI RFQ: ${subjectParts.join(" - ")}`,
+        text: buildInquiryText(payload, publicEmail),
+      }),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    console.error(JSON.stringify({
+      event: "rfq_provider_unavailable",
+      inquiryId,
+      provider: "resend",
+      reason: error?.name === "AbortError" ? "timeout" : "network_error",
+      recordedAt: new Date().toISOString(),
+    }));
+    return json(response, 502, { error: "Email delivery is temporarily unavailable.", inquiryId });
+  } finally {
+    clearTimeout(providerTimeout);
+  }
 
   const resendResult = await resendResponse.json().catch(() => ({}));
 
   if (!resendResponse.ok) {
     console.error(JSON.stringify({
       event: "rfq_provider_rejected",
+      inquiryId,
       provider: "resend",
       status: resendResponse.status,
       recordedAt: new Date().toISOString(),
@@ -126,11 +149,12 @@ export default async function handler(request, response) {
 
   console.info(JSON.stringify({
     event: "rfq_provider_accepted",
+    inquiryId,
     provider: "resend",
     providerMessageId: clean(resendResult.id, 200) || "not-returned",
     recordedAt: new Date().toISOString(),
   }));
 
   response.setHeader("X-RFQ-Status", "accepted");
-  return json(response, 202, { ok: true, status: "accepted" });
+  return json(response, 202, { ok: true, status: "accepted", inquiryId });
 }

@@ -1,7 +1,7 @@
 {
-  "enabled": true,
+  "enabled": false,
   "provider": "plausible",
   "plausibleDomain": "yujihealth.com",
   "plausibleScriptSrc": "https://plausible.io/js/script.js",
-  "notes": "Plausible aggregate analytics is enabled. Dashboard ownership and API/export access must be verified separately. Do not put secrets or RFQ text in this file or event properties."
+  "notes": "Plausible loading is disabled until account ownership, domain access, event receipt, retention, and export responsibility are verified. The bounded event code remains dormant and must not include secrets, personal fields, or RFQ text when re-enabled."
 }
