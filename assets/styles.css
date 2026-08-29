@@ -330,7 +330,8 @@ h4 {
   margin-top: 28px;
 }
 
-.trust-strip article {
+.trust-strip article,
+.trust-strip > [role="listitem"] {
   padding: 16px 16px 14px;
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(219, 232, 226, 0.95);
@@ -338,7 +339,9 @@ h4 {
   box-shadow: 0 10px 28px rgba(35, 65, 59, 0.06);
 }
 
-.trust-strip strong {
+.trust-strip strong,
+.trust-strip h2,
+.trust-strip h3 {
   display: block;
   margin-bottom: 6px;
   font-size: 14px;

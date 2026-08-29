@@ -1,20 +1,34 @@
 # YUJI RFQ delivery runbook
 
-## Current verified state — 2026-08-11
+## Current verified state — 2026-08-29
 
 - Production `POST /api/contact/` returns HTTP `202` plus `X-RFQ-Status: accepted` only after the email provider accepts the request.
 - Two controlled messages with no customer, health, or commercial data reached the connected owner mailbox.
 - Inbox placement was inconsistent: the pre-release test reached Inbox; the post-release test reached Spam.
 - The configured sender domain is not `yujihealth.com`. It authenticated for that different domain, so delivery works, but the public brand/sender alignment is not final.
+- Read-only public DNS checks on 2026-08-29 confirm that the YUJI sending-domain setup remains incomplete; the exact records and the authorized DNS owner are still required before a production sender change.
 
-## DNS diagnosis — 2026-08-12
+## DNS diagnosis — rechecked 2026-08-29
 
 - `yujihealth.com` publishes Cloudflare Email Routing MX records.
 - The apex SPF record is `v=spf1 include:_spf.mx.cloudflare.net ~all`; this authorizes the current forwarding route, not a third-party transactional sender by itself.
 - No DMARC TXT record was returned for `_dmarc.yujihealth.com`.
-- No Resend/DKIM record was returned for the checked YUJI selectors/subdomain.
+- No CNAME record was returned for the two checked common labels, `resend._domainkey.yujihealth.com` and `mail._domainkey.yujihealth.com`. This does not rule out an unobserved selector; the exact provider-issued records must come from the selected Resend sending-domain setup.
 
 Therefore, changing only the visible From address to `info@yujihealth.com` is not a safe fix. The provider-issued sending-domain records must be verified first. Do not replace the existing SPF record with a second SPF TXT record; merge only the exact provider authorization under DNS-owner review, or use a dedicated sending subdomain.
+
+## DNS-owner handoff
+
+Give the authorized DNS owner the provider-issued record list only after Operations has added the intended YUJI-controlled sending subdomain in Resend. The DNS owner should retain the existing Cloudflare Email Routing records and publish only the exact host, record type, target/value, and TTL shown by the provider. No generic DKIM selector or copied SPF value should be guessed.
+
+Record the following in a private operations ticket, not in Git or public website content:
+
+- selected sending subdomain and the Operations owner;
+- provider domain-verification status and the exact DNS record list;
+- DNS change approver and timestamp;
+- `RESEND_FROM` mailbox selected after verification;
+- DMARC reporting mailbox and policy decision;
+- controlled-test results from two mailbox providers.
 
 ## CRM-light fallback
 

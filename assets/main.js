@@ -15,7 +15,14 @@ const analyticsProducts = new Set([
   "OEM/ODM mixed program",
   "Quality documents",
 ]);
-const analyticsProduct = (value) => analyticsProducts.has(value) ? value : "unspecified";
+const productAliases = {
+  "Menstrual cup OEM": "Menstrual cups",
+};
+const normalizeProduct = (value) => productAliases[value] || value;
+const analyticsProduct = (value) => {
+  const normalizedProduct = normalizeProduct(value);
+  return analyticsProducts.has(normalizedProduct) ? normalizedProduct : "unspecified";
+};
 
 const trackEvent = (name, props = {}) => {
   if (typeof window.plausible !== "function") return;
@@ -110,7 +117,7 @@ inquiryForms.forEach((inquiryForm) => {
   const sourcePageInput = inquiryForm.querySelector('input[name="sourcePage"]');
   const landingPageInput = inquiryForm.querySelector('input[name="landingPage"]');
   const campaignInput = inquiryForm.querySelector('input[name="campaign"]');
-  const requestedProduct = new URL(window.location.href).searchParams.get("product");
+  const requestedProduct = normalizeProduct(new URL(window.location.href).searchParams.get("product"));
   let rfqStarted = false;
 
   if (productSelect && requestedProduct) {
