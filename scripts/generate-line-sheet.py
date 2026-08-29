@@ -102,7 +102,7 @@ def footer(c, page_number):
     c.line(34, 28, PAGE_W - 34, 28)
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 7.5)
-    c.drawString(34, 15, "yujihealth.com  |  info@yujihealth.com")
+    c.drawString(34, 15, "yujihealth.com  |  info@yujihealth.com  |  Buyer line sheet · 2026-08")
     c.drawRightString(PAGE_W - 34, 15, f"{page_number} / 8")
 
 
@@ -115,7 +115,10 @@ def rounded_box(c, x, y, width, height, fill=white, stroke=LINE, radius=8):
 def fact(c, x, y, width, value, caption, fill=PALE):
     rounded_box(c, x, y, width, 68, fill=fill)
     c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 18)
+    value_size = 18
+    while value_size > 12 and stringWidth(value, "Helvetica-Bold", value_size) > width - 24:
+        value_size -= 0.5
+    c.setFont("Helvetica-Bold", value_size)
     c.drawString(x + 12, y + 38, value)
     paragraph(c, caption, x + 12, y + 22, width - 24, size=8, leading=10)
 
@@ -165,7 +168,9 @@ def build_pdf(output_path):
     c = canvas.Canvas(str(output_path), pagesize=A4)
     c.setTitle("YUJI Feminine Care OEM Line Sheet")
     c.setAuthor("Xi'an Yuji Biotechnology Co., Ltd.")
+    c.setCreator("YUJI")
     c.setSubject("Feminine care OEM/ODM product and procurement line sheet")
+    c.setKeywords("feminine care OEM, menstrual cups, reusable menstrual discs, sanitary pads, private-label sourcing")
 
     # Page 1 - cover
     draw_image_crop(c, image_path("hero-products.jpg"), 0, 0, PAGE_W, PAGE_H)
@@ -199,10 +204,10 @@ def build_pdf(output_path):
     y -= 270
     fact_w = (PAGE_W - 110) / 4
     company_facts = [
-        ("2019", "Founded in Xi'an"),
-        ("3,200 sq m", "Factory footprint"),
-        ("3M+", "Cumulative cup shipments"),
-        ("30+", "Export markets served"),
+        ("Xi'an, China", "Operating base"),
+        ("OEM / ODM", "Private-label project model"),
+        ("Multi-line", "Cups, discs, pads and accessories"),
+        ("RFQ-led", "Quote and document scope by project"),
     ]
     for index, (value, caption) in enumerate(company_facts):
         fact(c, 34 + index * (fact_w + 14), y - 68, fact_w, value, caption, fill=PALE if index % 2 == 0 else WARM)
@@ -210,10 +215,10 @@ def build_pdf(output_path):
     label(c, "Procurement highlights", 34, y)
     y -= 18
     bullet_list(c, [
-        "Medical-grade LSR silicone focus for cup and reusable disc programs.",
+        "Reusable cup and disc programs with product-specific material and document review.",
         "Private-label packaging across pouch, box, leaflet, barcode, kit, and carton requirements.",
         "Sample and trial-order planning before artwork and mass production.",
-        "Specification, available certificate, QC release, packaging, and export document review by project.",
+        "Specification, available document, QC release, packaging, and export handoff review by project.",
     ], 34, y, PAGE_W - 68)
     footer(c, 2)
     c.showPage()
@@ -223,9 +228,9 @@ def build_pdf(output_path):
     label(c, "Product center", 34, PAGE_H - 78)
     y = title(c, "Three sourcing paths, one structured RFQ.", 34, PAGE_H - 104, PAGE_W - 68, size=28)
     products = [
-        ("Menstrual cups", "menstrual-cups-oem.jpg", "S/M/L mainstream structures, classic/soft/sport directions, pouch and kit packaging."),
-        ("Reusable discs", "menstrual-discs-oem.jpg", "50-65 ml reference capacities, rim and pull-ring options, reusable launch positioning."),
-        ("Pads, liners and kits", "pads-liners-oem.jpg", "150-350 mm formats, material directions, wrappers, retail packs, and auxiliary SKUs."),
+        ("Menstrual cups", "menstrual-cups-oem.jpg", "Reference sizing, product-feel review, pouch and kit packaging for private-label programs."),
+        ("Reusable discs", "menstrual-discs-oem.jpg", "Rim, removal design, capacity review, packaging, and reusable launch positioning."),
+        ("Pads, liners and kits", "pads-liners-oem.jpg", "Format briefs, material-stack review, wrappers, retail packs, and auxiliary SKUs."),
     ]
     card_h = 180
     for index, (name, image_name, copy) in enumerate(products):
@@ -238,33 +243,33 @@ def build_pdf(output_path):
         paragraph(c, copy, 260, box_y + 112, PAGE_W - 300, size=10, leading=14)
         c.setFillColor(TEAL_DARK)
         c.setFont("Helvetica-Bold", 9)
-        c.drawString(260, box_y + 30, ["1,000 pcs cup trial reference", "Custom color and packaging", "10,000 pcs pad trial reference"][index])
+        c.drawString(260, box_y + 30, ["Specification and packaging review", "Rim, capacity and pack review", "Material stack and pack review"][index])
     footer(c, 3)
     c.showPage()
 
     product_page(
-        c, 4, "Menstrual Cups", "Medical-grade silicone | private label | sample approval",
+        c, 4, "Menstrual Cups", "Reusable cup program | private label | sample review",
         "menstrual-cups-oem.jpg",
-        "Cup programs can use existing structures for a faster launch or move into custom color, hardness, packaging, and kit development for larger programs.",
-        [("S / M / L", "Mainstream size structure"), ("20-30 ml", "Classic capacity range"), ("1,000 pcs", "Trial MOQ reference")],
+        "Cup programs are planned around buyer size direction, product feel, packaging, kit components, and the document scope needed for the intended market.",
+        [("S / M / L", "Reference size planning"), ("Project-specific", "Capacity and feel review"), ("Private label", "Pouch and pack direction")],
         [
-            "Choose classic, soft, or sport direction based on channel and positioning.",
-            "Confirm size mix, color, logo, pouch, box, leaflet language, and kit components.",
-            "Review material files, sample feel, QC checkpoints, sterilization plan, and claim boundaries before artwork lock.",
-            "Regular-order planning reference: 15-20 working days after approvals, subject to final scope.",
+            "Define the intended user, size direction, color, logo, pouch, box, leaflet language, and kit components.",
+            "Review the quoted specification, sample feel, QC checkpoints, and claim boundaries before artwork approval.",
+            "Ask which current material, test, certificate-scope, and release records may be available for the quoted project.",
+            "Request a written production plan only after product, artwork, packaging, document, inspection, and shipping requirements are agreed.",
         ],
         "Target market, channel, cup sizes, expected quantity, color, packaging direction, sample needs, required documents, and launch date.",
     )
 
     product_page(
-        c, 5, "Reusable Menstrual Discs", "Reusable format | pull-ring options | DTC and retail",
+        c, 5, "Reusable Menstrual Discs", "Reusable format | private label | sample review",
         "menstrual-discs-oem.jpg",
         "Disc projects are suited to reusable-care launches that need capacity, rim feel, removal design, education, and packaging reviewed as one product program.",
-        [("50-65 ml", "Reference capacities"), ("2-3 years", "Reusable positioning"), ("Custom", "Color and pack support")],
+        [("Project-specific", "Capacity and fit review"), ("Design brief", "Rim and removal direction"), ("Private label", "Color and pack review")],
         [
-            "Select rim feel and removal design, including pull-ring direction where available.",
+            "Define rim feel and removal-design direction, including a pull-ring request where relevant.",
             "Plan education and packaging for DTC, Amazon, pharmacy, or premium wellness channels.",
-            "Confirm dimensions, capacity reference, packaging artwork requirements, and QC inspection checkpoints.",
+            "Confirm dimensions, capacity direction, packaging artwork requirements, and QC inspection checkpoints.",
             "Request current material, certificate, test, and release records for the quoted product and market.",
         ],
         "Target market, channel, disc format, expected quantity, color, pull-ring direction, packaging, samples, document list, and timeline.",
@@ -274,10 +279,10 @@ def build_pdf(output_path):
         c, 6, "Pads, Liners and Accessories", "Assortment depth | private label | distributor programs",
         "pads-liners-oem.jpg",
         "Disposable and auxiliary SKUs support broader retail shelves, reusable-care bundles, travel kits, distributor catalogs, and regional trial programs.",
-        [("150-350 mm", "Pad and liner formats"), ("10,000 pcs", "Pad trial MOQ reference"), ("Bundle-ready", "Pouches, wipes and kits")],
+        [("Format brief", "Pad and liner requirements"), ("Project-specific", "MOQ and pack review"), ("Bundle-ready", "Pouches, wipes and kits")],
         [
             "Define pad or liner format, absorbency direction, topsheet, wrapper, count, and retail pack.",
-            "Confirm organic cotton, bamboo charcoal, or other material positioning only against actual product documentation.",
+            "Confirm material positioning and market-facing claims only against the quoted BOM and supporting documentation.",
             "Use accessories such as storage pouches, wipes, sterilizing cups, and cleaning kits to build assortments.",
             "Request product specification, packaging bill of materials, carton data, test files, and QC release records.",
         ],
@@ -335,7 +340,7 @@ def build_pdf(output_path):
     c.drawString(54, 286, "Email: info@yujihealth.com")
     c.drawString(54, 264, "Web: yujihealth.com/contact/")
     c.drawString(54, 242, "Location: Xi'an, Shaanxi, China")
-    paragraph(c, "Typical RFQ review target: 1-2 business days. Final MOQ, lead time, document availability, and claims depend on the approved product and market scope.", 54, 215, PAGE_W - 230, size=8.5, leading=12, color=white)
+    paragraph(c, "Send the complete brief so the project can be reviewed against the quoted product and market scope. Final MOQ, timing, document availability, and claims are confirmed project by project.", 54, 215, PAGE_W - 230, size=8.5, leading=12, color=white)
     widget = qr.QrCodeWidget("https://yujihealth.com/contact/")
     bounds = widget.getBounds()
     qr_size = 102

@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "seo:audit": "node scripts/seo-static-audit.mjs",
     "seo:pagespeed": "node scripts/pagespeed-check.mjs",
     "seo:gsc": "node scripts/gsc.mjs",
     "seo:gsc:sites": "node scripts/gsc.mjs sites",
