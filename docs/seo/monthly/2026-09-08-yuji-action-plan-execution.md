@@ -37,7 +37,12 @@
 - `git diff --check`：通过。
 - `vercel build --yes`：通过，输出至 `.vercel/output`。首次在沙箱中因 npm 无法写入本机日志目录而失败；在相同构建输入的已授权发布环境中重跑成功，故该首次失败不代表网站构建失败。
 
-提交、生产部署和线上 HTTP/canonical/robots/链接/移动端复验将在本条记录对应的发布回执与最终任务交付中保留。
+### 生产发布回执与线上验证（2026-09-08）
+
+- Git：提交 `e774a6fb8e8fb8ebd8b8137d38fdff9df6a8d729`（`feat(seo): strengthen buyer paths and spec governance`）已推送至 `origin/main`；远端 `main` 已核对为同一 SHA。回退提交仍为 `5f98481`。
+- Vercel：生产部署 `dpl_c51zjephoDLY8dJ6ppsxzBqTv67B` 状态为 `READY`；生产别名为 `https://yujihealth.com`，本次直接生产 URL 为 `https://yujihealth-hjkwse8fr-context27149.vercel.app`，检查页为 `https://vercel.com/context27149/yujihealth.com/c51zjephoDLY8dJ6ppsxzBqTv67B`。
+- 线上 HTTP/内容证据：生产域名的首页、月经杯、pads/liners、OEM、pad 指南和 Contact 均为 `200`；`/robots.txt`、`/sitemap.xml`、`/llms.txt` 均为 `200`；随机错误路径为 `404`；`www` 首页为 `308` 并指向非 `www` 正式域名。已核对上述受改页面的 canonical、月经杯 Product JSON-LD、上下文产品/OEM/Contact 链接及 Contact 的市场、产品、数量、包装、时间、文件字段。线上空值表单验证仍为 `GET 405`、不完整 `POST 400`，未发送真实询盘；`/config/analytics.json` 仍为 `enabled: false`。
+- 移动端证据：在真实生产页的 `390 × 844` 视口检查月经杯页与 Contact 页。两页的根页面均为 `clientWidth 375 / scrollWidth 375`，没有页面级横向溢出；月经杯页三张宽表格各自位于 `overflow-x: auto` 的表格容器中（容器宽 362、表格宽 720），不造成页面横移；Contact 的可见字段宽 320、提交按钮宽 320，均在视口内。生产页控制台错误列表为空。此项为发布后视觉/交互可用性检查，不等同于真实询盘送达测试。
 
 ## 仍需外部资料或后续观察
 
