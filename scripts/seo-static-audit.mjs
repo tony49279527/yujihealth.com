@@ -251,7 +251,8 @@ async function auditPublicEvidenceBoundaries(targets) {
     "150-350 mm",
     "150–350 mm",
     "S/M/L sizing",
-    "S/M/L 尺寸"
+    "S/M/L 尺寸",
+    "S often targets lighter flow"
   ];
 
   for (const file of publicFiles) {

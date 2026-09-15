@@ -25,6 +25,7 @@
 - 静态 SEO 审计：30 个 sitemap 页面全部通过，覆盖语言对应、内链、JSON-LD、公开证据边界、下载、sitemap、robots 和 404 恢复。
 - JSON 配置解析：`package.json` 与 `config/seo-targets.json` 通过。
 - Git 差异检查：通过；原工作区的 CSV 修改和未跟踪月报保持原状。
+- 首次线上复验发现资源页可见 FAQ 已更新、同页 JSON-LD 仍保留旧尺寸建议；已补修并加入回归拦截。
 
 ## 未完成
 
