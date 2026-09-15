@@ -12,7 +12,7 @@ RFQ contact: https://yujihealth.com/contact/
 ## Product categories
 
 - Menstrual cups: https://yujihealth.com/products/menstrual-cups/
-  - Reusable cup programs with LSR silicone options, reference sizing, capacity and hardness review, storage pouches, leaflets, packaging, sampling, QC checkpoints, and project-specific document review.
+  - Reusable cup programs based on a buyer-defined brief, with quoted material, dimensions, capacity and product-feel review, storage pouches, leaflets, packaging, sampling, QC checkpoints, and project-specific document review.
 - Menstrual discs: https://yujihealth.com/products/menstrual-discs/
   - Reusable disc programs with rim-feel and capacity review, pull-ring options, premium-kit positioning, packaging, sampling, and QC checkpoints.
 - Sanitary pads, liners, wipes, pouches, and accessories: https://yujihealth.com/products/pads-liners/
@@ -38,7 +38,7 @@ Quality path: https://yujihealth.com/quality/
 Evidence request hub: https://yujihealth.com/quality/evidence/
 Line sheet: https://yujihealth.com/downloads/yuji-feminine-care-oem-line-sheet.pdf
 
-The site describes material specification review, first-article criteria, in-process checks, final inspection, QC release records, packaging and carton review, certificate-scope checks, and market-classification review. LSR silicone options are described for cup programs; material, test, certificate, and regulatory statements must be matched to the quoted product, method, entity, market, issue/expiry date, and public-use approval. Documents may be available by project and are not blanket product approvals.
+The site describes material specification review, first-article criteria, in-process checks, final inspection, QC release records, packaging and carton review, certificate-scope checks, and market-classification review. Material, product, test, certificate, and regulatory statements must be matched to the quoted product, method, entity, market, issue/expiry date, and public-use approval. Documents may be available by project and are not blanket product approvals.
 
 ## Selecting a product and making contact
 

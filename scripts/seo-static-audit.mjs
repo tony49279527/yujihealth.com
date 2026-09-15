@@ -238,6 +238,32 @@ async function audit404() {
   }
 }
 
+async function auditPublicEvidenceBoundaries(targets) {
+  const publicFiles = [...new Set(targets.map((target) => fileForRoute(target.path)))];
+  publicFiles.push("llms.txt");
+  const prohibited = [
+    "LSR silicone options",
+    "quoted LSR",
+    "20-30 ml",
+    "20–30 ml",
+    "50-65 ml",
+    "50–65 ml",
+    "150-350 mm",
+    "150–350 mm",
+    "S/M/L sizing",
+    "S/M/L 尺寸"
+  ];
+
+  for (const file of publicFiles) {
+    const content = await readText(file);
+    for (const phrase of prohibited) {
+      if (content.toLowerCase().includes(phrase.toLowerCase())) {
+        fail(`${file}: contains an unapproved fixed public specification: ${phrase}`);
+      }
+    }
+  }
+}
+
 async function main() {
   const config = JSON.parse(await readText("config/seo-targets.json"));
   const siteUrl = config.siteUrl.replace(/\/$/, "");
@@ -248,8 +274,9 @@ async function main() {
   await auditSitemap(siteUrl, targets);
   await auditDownloads();
   await audit404();
+  await auditPublicEvidenceBoundaries(targets);
 
-  console.log(`Audited ${targets.length} sitemap pages, language pairs, internal links, JSON-LD, downloads, sitemap, robots, and 404 recovery.`);
+  console.log(`Audited ${targets.length} sitemap pages, language pairs, internal links, JSON-LD, public evidence boundaries, downloads, sitemap, robots, and 404 recovery.`);
   if (warnings.length) console.warn(`Warnings (${warnings.length}):\n${warnings.map((message) => `- ${message}`).join("\n")}`);
   if (errors.length) {
     console.error(`Errors (${errors.length}):\n${errors.map((message) => `- ${message}`).join("\n")}`);

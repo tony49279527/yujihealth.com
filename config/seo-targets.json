@@ -2,6 +2,16 @@
   "siteUrl": "https://yujihealth.com",
   "gscSiteUrl": "https://yujihealth.com/",
   "sitemapUrl": "https://yujihealth.com/sitemap.xml",
+  "gscMonitoring": {
+    "dataDelayDays": 3,
+    "windowDays": 28,
+    "minBaselineImpressions": 100,
+    "minBaselineClicks": 5,
+    "thresholds": {
+      "impressionsDropPct": 40,
+      "clicksDropPct": 50
+    }
+  },
   "categories": [
     "performance",
     "accessibility",

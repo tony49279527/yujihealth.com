@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import { buildMonitoringSummary } from "./lib/gsc-monitor.mjs";
 
 const root = process.cwd();
 loadEnv(path.join(root, ".env.local"));
@@ -20,10 +21,11 @@ try {
   else if (command === "sitemaps") await listSitemaps();
   else if (command === "submit-sitemap") await submitSitemap();
   else if (command === "query") await querySearchAnalytics();
+  else if (command === "monitor") await monitorSearchAnalytics();
   else if (command === "inspect") await inspectUrl();
   else if (command === "inspect-all") await inspectAllUrls();
   else {
-    console.error("Unknown command. Use: sites | sitemaps | submit-sitemap | query | inspect | inspect-all");
+    console.error("Unknown command. Use: sites | sitemaps | submit-sitemap | query | monitor | inspect | inspect-all");
     process.exit(1);
   }
 } catch (error) {
@@ -78,6 +80,46 @@ async function querySearchAnalytics() {
   for (const row of rows.slice(0, 20)) {
     console.log(`${row.clicks || 0} clicks | ${row.impressions || 0} impressions | ${row.ctr || 0} ctr | ${row.position || 0} avg | ${row.keys?.join(" | ")}`);
   }
+}
+
+async function monitorSearchAnalytics() {
+  const monitoring = config.gscMonitoring;
+  const endDate = args.endDate || isoDate(new Date(Date.now() - monitoring.dataDelayDays * 24 * 60 * 60 * 1000));
+  const startDate = args.startDate || shiftIsoDate(endDate, -(monitoring.windowDays - 1));
+  const previousEndDate = shiftIsoDate(startDate, -1);
+  const previousStartDate = shiftIsoDate(previousEndDate, -(monitoring.windowDays - 1));
+  const endpoint = `https://searchconsole.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`;
+  const makeBody = (rangeStart, rangeEnd) => ({
+    startDate: rangeStart,
+    endDate: rangeEnd,
+    dimensions: ["date"],
+    rowLimit: monitoring.windowDays + 7
+  });
+  const [currentJson, previousJson] = await Promise.all([
+    api("POST", endpoint, makeBody(startDate, endDate)),
+    api("POST", endpoint, makeBody(previousStartDate, previousEndDate))
+  ]);
+  const summary = buildMonitoringSummary({
+    currentRows: currentJson.rows || [],
+    previousRows: previousJson.rows || [],
+    monitoring
+  });
+  const report = {
+    siteUrl,
+    ranges: {
+      current: { startDate, endDate },
+      previous: { startDate: previousStartDate, endDate: previousEndDate }
+    },
+    monitoring,
+    ...summary
+  };
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const reportPath = path.join(reportDir, `gsc-monitor-${startDate}-to-${endDate}-${stamp}.json`);
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
+  console.log(`Current: ${summary.current.clicks} clicks | ${summary.current.impressions} impressions | ${(summary.current.ctr * 100).toFixed(2)}% CTR | ${summary.current.position.toFixed(2)} avg position`);
+  console.log(`Previous: ${summary.previous.clicks} clicks | ${summary.previous.impressions} impressions | ${(summary.previous.ctr * 100).toFixed(2)}% CTR | ${summary.previous.position.toFixed(2)} avg position`);
+  console.log(summary.alerts.length ? `Alerts: ${summary.alerts.map((alert) => alert.metric).join(", ")}` : "Alerts: none");
+  console.log(`Report written: ${path.relative(root, reportPath)}`);
 }
 
 async function inspectUrl() {
@@ -258,4 +300,8 @@ function slugPart(value) {
 
 function isoDate(date) {
   return date.toISOString().slice(0, 10);
+}
+
+function shiftIsoDate(value, days) {
+  return isoDate(new Date(Date.parse(`${value}T00:00:00Z`) + days * 24 * 60 * 60 * 1000));
 }

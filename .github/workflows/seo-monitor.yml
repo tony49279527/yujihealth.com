@@ -20,18 +20,30 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Run SEO regression tests
+        run: npm run seo:test
+      - name: Run static SEO audit
+        run: npm run seo:audit
       - name: Run PageSpeed checks
         if: ${{ env.PSI_API_KEY != '' }}
         run: npm run seo:pagespeed
-      - name: Run GSC query
+      - name: Compare rolling GSC periods
         if: ${{ env.GSC_SERVICE_ACCOUNT_JSON != '' }}
-        run: npm run seo:gsc:query
+        run: npm run seo:gsc:monitor
+      - name: Export GSC dimensions
+        if: ${{ env.GSC_SERVICE_ACCOUNT_JSON != '' }}
+        run: |
+          npm run seo:gsc:query -- --dimensions=date
+          npm run seo:gsc:query -- --dimensions=page
+          npm run seo:gsc:query -- --dimensions=query,page
+          npm run seo:gsc:query -- --dimensions=country
+          npm run seo:gsc:query -- --dimensions=device
       - name: Run GSC sitemap status
         if: ${{ env.GSC_SERVICE_ACCOUNT_JSON != '' }}
         run: npm run seo:gsc:sitemaps
       - name: Inspect priority URLs
         if: ${{ env.GSC_SERVICE_ACCOUNT_JSON != '' }}
-        run: npm run seo:gsc:inspect-all -- --only=/,/quality/,/quality/evidence/,/contact/ --fail-on-error=true
+        run: npm run seo:gsc:inspect-all -- --only=/,/products/menstrual-cups/,/products/pads-liners/,/oem-odm/,/resources/how-to-start-private-label-pad-brand/,/quality/evidence/,/contact/ --fail-on-error=true
       - name: Upload SEO reports
         if: always()
         uses: actions/upload-artifact@v4

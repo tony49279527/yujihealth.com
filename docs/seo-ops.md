@@ -20,11 +20,18 @@ npm run seo:gsc:sites
 npm run seo:gsc:sitemaps
 npm run seo:gsc:submit-sitemap
 npm run seo:gsc:query
+npm run seo:gsc:query -- --dimensions=page
+npm run seo:gsc:monitor
 npm run seo:gsc:inspect -- --url=https://yujihealth.com/products/menstrual-cups/
 npm run seo:gsc:inspect-all
+npm run seo:test
 ```
 
 Reports are written under `reports/`, which is intentionally ignored by git.
+
+The weekly workflow compares the latest complete 28-day period with the preceding 28 days, allowing three days for Search Console processing. It exports separate date, page, query/page, country, and device views so totals, landing-page movement, demand language, geography, and device effects are not mixed together. Alerts require a minimum baseline of 100 impressions; click alerts also require at least five prior-period clicks. Thresholds live in `config/seo-targets.json` and should be reviewed only after the site has enough stable data.
+
+Use the `date` export or the monitor summary for site totals. Do not sum query/page rows as an authoritative total because Search Console can omit anonymized queries and apply row limits.
 
 ## GSC Property
 
