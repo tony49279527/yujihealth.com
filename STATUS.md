@@ -31,10 +31,13 @@
 - 新文案已上线，旧 LSR 和固定规格标记已从抽检入口消失。
 - 随机错误路径返回 404；`www` 永久跳转到非 `www` 正式域名。
 - 发布收尾发现根目录项目记录可被静态托管访问；已将 `SPEC.md`、`PLAN.md`、`STATUS.md` 加入 `.vercelignore`，保留仓库记录并从生产包排除。
+- GitHub 上的 SEO Monitor 曾处于 disabled；已恢复并手动运行，run `34924972232` 全部步骤成功。
+- 首次真实监测覆盖 2026-08-16 至 2026-09-12：5 clicks、236 impressions、CTR 2.12%、平均位置 21.89；前一等长窗口为 1 click、118 impressions，未触发下降提醒。
+- 7 个重点 URL Inspection 全部 PASS、已提交并收录、抓取成功且 canonical 匹配。
 
 ## 未完成
 
-- GSC 真实监测命令需等待下一次 GitHub Actions 定时运行或手动触发后验证。
+- 自然搜索增长与询盘转化仍需后续完整窗口观察；当前曝光基数较小。
 
 ## 外部依赖
 
