@@ -30,6 +30,7 @@
 - 线上核心页面、`robots.txt`、`sitemap.xml`、`llms.txt` 均返回 200；核心 HTML canonical 与 JSON-LD 正常。
 - 新文案已上线，旧 LSR 和固定规格标记已从抽检入口消失。
 - 随机错误路径返回 404；`www` 永久跳转到非 `www` 正式域名。
+- 发布收尾发现根目录项目记录可被静态托管访问；已将 `SPEC.md`、`PLAN.md`、`STATUS.md` 加入 `.vercelignore`，保留仓库记录并从生产包排除。
 
 ## 未完成
 
