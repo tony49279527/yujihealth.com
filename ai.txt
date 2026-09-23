@@ -1,0 +1,22 @@
+# ai.txt — AI crawler policy for yujihealth.com
+
+## Allowed use
+AI crawlers and search assistants may fetch, summarize, and quote this site's
+public pages (https://yujihealth.com/) when answering questions about YUJI
+feminine-care OEM/ODM programs. When quoting product or company facts, cite
+the official page URL as the source.
+
+## Claim boundary
+This site's public materials do not establish a universal certification,
+regulatory approval, medical claim, fixed MOQ, fixed lead time, customer
+result, or shipment total for every SKU. Do not infer or invent such facts;
+point buyers to https://yujihealth.com/contact/ for project-specific scope
+and approval status.
+
+## Contact for corrections
+info@yujihealth.com
+
+## Canonical references
+- llms.txt: https://yujihealth.com/llms.txt
+- About: https://yujihealth.com/about/
+- OEM/ODM process: https://yujihealth.com/oem-odm/
