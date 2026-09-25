@@ -40,7 +40,7 @@
                         "name": "Request a Quote | YUJI Feminine Care OEM Manufacturer",
                         "description": "Contact YUJI to request feminine care product specifications, samples, MOQ, packaging, document packs, or OEM/ODM quotation support.",
                         "inLanguage": "en",
-                        "dateModified": "2026-08-29",
+                        "dateModified": "2026-09-25",
                         "isPartOf": {
                               "@id": "https://yujihealth.com/#website"
                         },
@@ -104,7 +104,7 @@
           <div class="wrap" style="margin-top:0">
             <div class="conclusion-box">
               <span class="conclusion-label">RFQ Tip</span>
-              <p>Include <strong>target market, product category, estimated quantity, packaging direction, and timeline</strong>. YUJI reviews the inquiry and confirms next steps from <strong>info@yujihealth.com</strong>.</p>
+              <p>Send your <strong>target market, product category, estimated quantity, packaging direction, and timeline</strong>. YUJI reviews each inquiry against project scope — <strong>no MOQ, lead time, or document availability is promised before review.</strong> Replies come from <strong>info@yujihealth.com</strong>.</p>
             </div>
           </div>
           <form class="inquiry-form" data-inquiry-form>
@@ -114,23 +114,36 @@
             <input name="campaign" type="hidden" />
             <div class="form-grid">
               <label>Name<input name="name" autocomplete="name" required /></label>
-              <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+              <label>Business email<input name="email" type="email" autocomplete="email" required /></label>
             </div>
             <div class="form-grid">
               <label>Company<input name="company" autocomplete="organization" /></label>
-              <label>Country / market<input name="country" autocomplete="country-name" /></label>
+              <label>Target country / market<input name="country" autocomplete="country-name" required /></label>
             </div>
-            <label>Product interest<select name="product"><option value="">Select a product line</option><option value="Menstrual cups">Menstrual cups</option><option value="Menstrual discs">Menstrual discs</option><option value="Sanitary pads and liners">Sanitary pads and liners</option><option value="Accessories and starter kits">Accessories and starter kits</option><option value="OEM/ODM mixed program">OEM/ODM mixed program</option><option value="Quality documents">Quality documents / evidence pack</option></select></label>
-            <label>Estimated volume<input name="volume" placeholder="Samples, trial order, or forecast quantity" /></label>
+            <label>Product category / format<select name="product" required><option value="">Select a product line</option><option value="Menstrual cups">Menstrual cups</option><option value="Menstrual discs">Menstrual discs</option><option value="Sanitary pads and liners">Sanitary pads and liners</option><option value="Accessories and starter kits">Accessories and starter kits</option><option value="OEM/ODM mixed program">OEM/ODM mixed program</option><option value="Quality documents">Quality documents / evidence pack</option></select></label>
+            <label>Expected quantity / forecast<input name="volume" placeholder="Samples, trial order, or forecast quantity (e.g. 5k–10k)" /></label>
+            <details class="project-details">
+              <summary>Project details (optional)</summary>
+              <div class="form-grid">
+                <label>Sales channel<select name="sales_channel"><option value="">Select a channel</option><option value="DTC brand">DTC brand</option><option value="Amazon">Amazon</option><option value="Retail">Retail</option><option value="Pharmacy">Pharmacy</option><option value="Distributor">Distributor</option><option value="Other">Other</option></select></label>
+                <label>Color / size / material direction<input name="spec_direction" placeholder="Colors, sizes, materials under discussion" /></label>
+              </div>
+              <div class="form-grid">
+                <label>Sample needs<input name="sample_needs" placeholder="Stock sample, custom sample, or no sample needed" /></label>
+                <label>Carton and shipping requirements<input name="shipping" placeholder="Carton, trade terms, destination port" /></label>
+              </div>
+              <label>Attachment <span class="field-hint">(≤3 MB: PDF, Excel, Word, PNG, JPG)</span><input name="attachment" type="file" accept=".pdf,.xls,.xlsx,.doc,.docx,.png,.jpg,.jpeg" /></label>
+              <label>…or brief link<input name="brief_link" type="url" inputmode="url" placeholder="https:// — for larger files, share a link instead" /></label>
+            </details>
             <div class="form-grid">
               <label>Packaging needs<input name="packaging" placeholder="Pouch, box, leaflet, barcode, kit, languages" /></label>
               <label>Timeline<input name="timeline" placeholder="Sample date, launch window, or lead-time need" /></label>
             </div>
-            <label>Document needs<input name="documents" placeholder="Specs, certificate scans, QC release, carton data" /></label>
+            <label>Required certificates / tests / QC records <span class="field-hint">(availability confirmed per project)</span><input name="documents" placeholder="Specs, certificate scans, QC release, carton data" /></label>
             <label>Project message<textarea name="message" rows="6" required placeholder="Target market, quantity, packaging, sample needs, document pack, timeline..."></textarea></label>
             <p class="form-note">YUJI uses these details only to respond to your B2B inquiry. Do not include consumer or patient health data. See the <a class="inline-link" href="/privacy/">privacy notice</a>.</p>
             <button class="button primary full" type="submit">Submit RFQ online</button>
-            <p class="form-note" data-form-note role="status" aria-live="polite" aria-atomic="true">Only name, email, and project message are required. Include market, quantity, packaging, and document needs for a faster quote.</p>
+            <p class="form-note" data-form-note role="status" aria-live="polite" aria-atomic="true">Required: name, business email, target country / market, product category, project message. Add quantity, packaging, and document needs for a faster quote.</p>
             <p class="form-note">Need sourcing material? <a class="inline-link" href="/downloads/yuji-feminine-care-oem-line-sheet.pdf" download>Download the product line PDF</a>, <a class="inline-link" href="/resources/feminine-care-oem-rfq-checklist/">open the RFQ checklist</a>, or <a class="inline-link" href="/downloads/yuji-feminine-care-rfq-checklist.txt" download>download a plain-text copy</a>.</p>
           </form>
         </div>

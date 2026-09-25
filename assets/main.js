@@ -29,6 +29,11 @@ const trackEvent = (name, props = {}) => {
   window.plausible(name, { props });
 };
 
+const eventLanguage = isZh ? "zh" : "en";
+const eventContentType = currentPath.startsWith("/resources/") ? "guide" : currentPath === "/" ? "home" : "page";
+const ATTACHMENT_MAX_BYTES = 3 * 1024 * 1024;
+const ATTACHMENT_EXTENSIONS = ["pdf", "xls", "xlsx", "doc", "docx", "png", "jpg", "jpeg"];
+
 try {
   if (!window.sessionStorage.getItem(`${attributionPrefix}landing_page`)) {
     window.sessionStorage.setItem(`${attributionPrefix}landing_page`, currentUrl.pathname);
@@ -109,6 +114,41 @@ document.addEventListener("click", (event) => {
   });
 });
 
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return;
+  const link = event.target.closest('a[href$=".pdf"]');
+  if (!link) return;
+  trackEvent("pdf_download", {
+    page_path: currentPath,
+    language: eventLanguage,
+    content_type: eventContentType,
+    file_name: link.getAttribute("href").split("/").pop().slice(0, 120),
+  });
+});
+
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return;
+  const link = event.target.closest('a[href^="mailto:"]');
+  if (!link) return;
+  trackEvent("email_click", {
+    page_path: currentPath,
+    language: eventLanguage,
+    content_type: eventContentType,
+  });
+});
+
+const readAttachmentFile = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || "");
+      const base64 = result.includes(",") ? result.split(",")[1] : result;
+      resolve({ filename: file.name, content: base64 });
+    };
+    reader.onerror = () => reject(new Error("Attachment could not be read."));
+    reader.readAsDataURL(file);
+  });
+
 inquiryForms.forEach((inquiryForm) => {
   const formNote = inquiryForm.querySelector("[data-form-note]");
   const submitButton = inquiryForm.querySelector('button[type="submit"]');
@@ -172,16 +212,23 @@ inquiryForms.forEach((inquiryForm) => {
   inquiryForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const data = new FormData(inquiryForm);
+    const attachmentInput = inquiryForm.querySelector('input[name="attachment"]');
+    const attachmentFile = attachmentInput && attachmentInput.files ? attachmentInput.files[0] : null;
     const payload = {
       name: String(data.get("name") || "").trim(),
       email: String(data.get("email") || "").trim(),
       company: String(data.get("company") || "").trim(),
       country: String(data.get("country") || "").trim(),
+      sales_channel: String(data.get("sales_channel") || "").trim(),
       product: String(data.get("product") || "").trim(),
       volume: String(data.get("volume") || "").trim(),
+      spec_direction: String(data.get("spec_direction") || "").trim(),
       packaging: String(data.get("packaging") || "").trim(),
+      sample_needs: String(data.get("sample_needs") || "").trim(),
+      shipping: String(data.get("shipping") || "").trim(),
       timeline: String(data.get("timeline") || "").trim(),
       documents: String(data.get("documents") || "").trim(),
+      brief_link: String(data.get("brief_link") || "").trim(),
       message: String(data.get("message") || "").trim(),
       website: String(data.get("website") || "").trim(),
       sourcePage: String(data.get("sourcePage") || "").trim(),
@@ -189,9 +236,27 @@ inquiryForms.forEach((inquiryForm) => {
       campaign: String(data.get("campaign") || "").trim(),
     };
 
-    if (!payload.name || !payload.email || !payload.message) {
-      setFormNote(isZh ? "请填写姓名、邮箱和项目说明后再发送。" : "Please add your name, email, and project message before sending.", "error");
+    if (!payload.name || !payload.email || !payload.country || !payload.product || !payload.message) {
+      setFormNote(isZh ? "请填写姓名、邮箱、目标市场、产品类别和项目说明后再发送。" : "Please add your name, email, target market, product category, and project message before sending.", "error");
       return;
+    }
+
+    if (attachmentFile) {
+      const extension = attachmentFile.name.split(".").pop().toLowerCase();
+      if (!ATTACHMENT_EXTENSIONS.includes(extension)) {
+        setFormNote(isZh ? "附件格式不支持，请使用 PDF、Excel、Word、PNG 或 JPG。" : "Unsupported attachment type. Use PDF, Excel, Word, PNG, or JPG.", "error");
+        return;
+      }
+      if (attachmentFile.size > ATTACHMENT_MAX_BYTES) {
+        setFormNote(isZh ? "附件需小于 3 MB，较大文件请改用简介链接。" : "Attachment must be 3 MB or smaller — use a brief link for larger files.", "error");
+        return;
+      }
+      try {
+        payload.attachment = await readAttachmentFile(attachmentFile);
+      } catch {
+        setFormNote(isZh ? "附件读取失败，请重试或改用简介链接。" : "Attachment could not be read. Try again or use a brief link.", "error");
+        return;
+      }
     }
 
     if (submitButton) {
@@ -213,7 +278,8 @@ inquiryForms.forEach((inquiryForm) => {
       });
 
       if (!response.ok) {
-        throw new Error("Contact endpoint unavailable");
+        const failure = await response.json().catch(() => ({}));
+        throw new Error(failure.error || "Contact endpoint unavailable");
       }
 
       const result = await response.json().catch(() => ({}));
@@ -223,16 +289,16 @@ inquiryForms.forEach((inquiryForm) => {
         sourcePage: payload.sourcePage || "direct",
         status: result.status || "accepted",
       });
+      trackEvent("lead_form_submit", {
+        page_path: currentPath,
+        product_category: analyticsProduct(payload.product),
+        language: eventLanguage,
+        content_type: eventContentType,
+        has_attachment: Boolean(payload.attachment),
+      });
 
-      inquiryForm.reset();
-      rfqStarted = false;
-      const inquiryReference = result.inquiryId ? ` ${isZh ? "参考号" : "Reference"}: ${result.inquiryId}.` : "";
-      setFormNote(
-        (isZh
-          ? "询价已由邮件服务接受投递。裕吉生物会审阅信息，并从业务邮箱回复。"
-          : "Inquiry accepted for email delivery. YUJI will review the details and reply from its business inbox.") + inquiryReference,
-        "success",
-      );
+      const ref = result.inquiryId ? `?ref=${encodeURIComponent(result.inquiryId)}` : "";
+      window.location.href = `/contact/success/${ref}`;
     } catch (error) {
       setFormNote(isZh ? "在线提交暂时不可用。请将市场、数量、包装和文件需求发送至 info@yujihealth.com。" : "Online submission is temporarily unavailable. Email info@yujihealth.com with your market, volume, packaging, and document needs.", "error");
     } finally {
