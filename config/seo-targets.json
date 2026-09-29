@@ -66,6 +66,10 @@
       "label": "Quality Evidence"
     },
     {
+      "path": "/quality/line-sheet/",
+      "label": "Quality Line Sheet"
+    },
+    {
       "path": "/about/",
       "label": "About"
     },
