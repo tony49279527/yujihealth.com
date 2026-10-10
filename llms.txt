@@ -41,6 +41,14 @@ RFQ checklist: https://yujihealth.com/resources/feminine-care-oem-rfq-checklist/
 - How to Evaluate Feminine Care Private-Label Suppliers in China: https://yujihealth.com/resources/best-feminine-care-private-label/
 - Feminine Care OEM Compliance & RFQ Checklist: https://yujihealth.com/resources/feminine-care-oem-rfq-checklist/
 
+## Chinese language pages (中文核心页)
+
+- 首页: https://yujihealth.com/zh/
+- 产品中心: https://yujihealth.com/zh/products/
+- OEM/ODM 服务: https://yujihealth.com/zh/oem-odm/
+- 质量体系: https://yujihealth.com/zh/quality/
+- 询价联系: https://yujihealth.com/zh/contact/
+
 ## OEM/ODM capability
 
 The stated project workflow is: brief and sample → customize and approve → trial production → mass delivery. Buyers can define product size or capacity targets, color, hardness or rim feel, accessory mix, pouch, box, leaflet, wrapper, barcode, carton, label, language, and document requirements, subject to product type, volume, mold status, package complexity, target-market rules, and approval scope.
@@ -51,7 +59,8 @@ Buyers should provide target market and channel, product category, sample or tri
 
 Quality path: https://yujihealth.com/quality/
 Evidence request hub: https://yujihealth.com/quality/evidence/
-Line sheet: https://yujihealth.com/downloads/yuji-feminine-care-oem-line-sheet.pdf
+Line sheet (HTML): https://yujihealth.com/quality/line-sheet/
+Line sheet (PDF): https://yujihealth.com/downloads/yuji-feminine-care-oem-line-sheet.pdf
 
 The site describes material specification review, first-article criteria, in-process checks, final inspection, QC release records, packaging and carton review, certificate-scope checks, and market-classification review. Material, product, test, certificate, and regulatory statements must be matched to the quoted product, method, entity, market, issue/expiry date, and public-use approval. Documents may be available by project and are not blanket product approvals.
 
