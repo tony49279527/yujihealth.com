@@ -105,7 +105,7 @@ initAnalytics();
 
 document.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) return;
-  const link = event.target.closest('a[href^="/contact/"]');
+  const link = event.target.closest('a[href^="/contact/"], a[href^="/zh/contact/"]');
   if (!link) return;
   const destination = new URL(link.href, window.location.origin);
   trackEvent("product_cta", {
