@@ -83,9 +83,11 @@
 
 ## 五、线上实测闭环回执
 
-- **部署 commit**：`7cde75d`
+- **部署 commit**：`7cde75d` & `78e9537`
 - **实测验证**：
   - `https://yujihealth.com/sitemap.xml`：11 个目标页面的 `<lastmod>2026-10-08</lastmod>` 已全部生效；
   - `https://yujihealth.com/contact/success/`：包含 `YUJI 裕吉生物` 中文自适应逻辑已生效；
   - `https://yujihealth.com/assets/main.js`：包含 `langPart` / `isZh` 语境传递逻辑已生效；
-  - `POST https://yujihealth.com/api/contact/`：空值测试正常返回 400，发件逻辑受控。
+  - `POST https://yujihealth.com/api/contact/`：空值测试正常返回 400，发件逻辑受控；
+  - `https://yujihealth.com/zh/...`（5 核心页）：主行动号召按钮（CTA）、面包屑导航与互链全面实现 `/zh/` 闭环，消除回跳英文站缺陷，经实测全部通过（True）。
+
