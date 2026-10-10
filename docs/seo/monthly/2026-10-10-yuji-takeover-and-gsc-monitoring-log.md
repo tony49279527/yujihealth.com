@@ -40,6 +40,11 @@
    - 将 10-08 发生实质变更的 11 个页面（5 个中文核心页 + 5 个 B2 重写页 + 1 个 B1 合规页）的 `<lastmod>` 统一刷新为 `2026-10-08`，主动广播搜索引擎更新。
 4. **AI/GEO 索引资产（`llms.txt`）增强**：
    - 补充 5 大中文核心页入口与 HTML 版产品规格表（`/quality/line-sheet/`），提升 AI 搜索引用与多语言索引发现效率。
+5. **中文站内链闭环与权重隔离**：
+   - 中文 5 大核心页面包屑、Hero CTA、底栏以及卡片链接全面修正为 `/zh/contact/`、`/zh/products/`、`/zh/oem-odm/` 等内部语言孤岛链接，消除跳回英文站问题。
+6. **结构化数据 `dateModified` 与中文联系页 Meta 对齐**：
+   - 11 个核心/资源页 JSON-LD `dateModified` 统一同步为 `2026-10-08`，与 `sitemap.xml` 达成 100% 一致性；
+   - 丰富 `zh/contact/index.html` 的 Meta Description，对齐完整 B2B 采购意图（产品规格、打样支持、私标包装、参考起订量及报价资料）。
 
 ---
 
@@ -83,11 +88,13 @@
 
 ## 五、线上实测闭环回执
 
-- **部署 commit**：`7cde75d` & `78e9537`
+- **部署 commits**：`7cde75d`, `fa0711e`, `78e9537`, `ae33364`, `13385e3`
 - **实测验证**：
   - `https://yujihealth.com/sitemap.xml`：11 个目标页面的 `<lastmod>2026-10-08</lastmod>` 已全部生效；
   - `https://yujihealth.com/contact/success/`：包含 `YUJI 裕吉生物` 中文自适应逻辑已生效；
   - `https://yujihealth.com/assets/main.js`：包含 `langPart` / `isZh` 语境传递逻辑已生效；
   - `POST https://yujihealth.com/api/contact/`：空值测试正常返回 400，发件逻辑受控；
-  - `https://yujihealth.com/zh/...`（5 核心页）：主行动号召按钮（CTA）、面包屑导航与互链全面实现 `/zh/` 闭环，消除回跳英文站缺陷，经实测全部通过（True）。
+  - `https://yujihealth.com/zh/...`（5 核心页）：主行动号召按钮（CTA）、面包屑导航与互链全面实现 `/zh/` 闭环，消除回跳英文站缺陷，经实测全部通过（True）；
+  - `https://yujihealth.com/...`（11 核心与资源页）：JSON-LD 结构化数据中的 `"dateModified": "2026-10-08"` 经线上实测全部通过（True）；
+  - `https://yujihealth.com/zh/contact/`：中文版 Meta Description / OG / Twitter 标签扩充上线，实测匹配成功（True）。
 
