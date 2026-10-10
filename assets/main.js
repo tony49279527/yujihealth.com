@@ -297,8 +297,10 @@ inquiryForms.forEach((inquiryForm) => {
         has_attachment: Boolean(payload.attachment),
       });
 
-      const ref = result.inquiryId ? `?ref=${encodeURIComponent(result.inquiryId)}` : "";
-      window.location.href = `/contact/success/${ref}`;
+      const refPart = result.inquiryId ? `ref=${encodeURIComponent(result.inquiryId)}` : "";
+      const langPart = isZh ? "lang=zh" : "";
+      const query = [refPart, langPart].filter(Boolean).join("&");
+      window.location.href = `/contact/success/${query ? `?${query}` : ""}`;
     } catch (error) {
       setFormNote(isZh ? "在线提交暂时不可用。请将市场、数量、包装和文件需求发送至 info@yujihealth.com。" : "Online submission is temporarily unavailable. Email info@yujihealth.com with your market, volume, packaging, and document needs.", "error");
     } finally {

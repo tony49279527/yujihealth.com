@@ -150,7 +150,10 @@ export default async function handler(request, response) {
 
   const to = process.env.INQUIRY_TO || DEFAULT_INQUIRY_TO;
   const publicEmail = process.env.PUBLIC_CONTACT_EMAIL || DEFAULT_PUBLIC_EMAIL;
-  const from = process.env.RESEND_FROM || `YUJI Website <${publicEmail}>`;
+  const isZhSource = (typeof payload.sourcePage === "string" && payload.sourcePage.includes("/zh/")) ||
+                     (typeof payload.landingPage === "string" && payload.landingPage.includes("/zh/"));
+  const defaultSenderName = isZhSource ? "YUJI 裕吉生物" : "YUJI Feminine Care";
+  const from = process.env.RESEND_FROM || `${defaultSenderName} <${publicEmail}>`;
   const subjectParts = [payload.product || "OEM/ODM", payload.company || payload.country || payload.name].filter(Boolean);
 
   const emailPayload = {

@@ -54,7 +54,7 @@ For CI-based GSC checks, add the service account email as a user on the verified
 Set `RESEND_FROM` to a verified sender on the production domain, for example:
 
 ```text
-YUJI Website <info@yujihealth.com>
+YUJI Feminine Care <info@yujihealth.com>
 ```
 
 The API falls back to the public contact email if `RESEND_FROM` is absent, but production should use an explicitly verified Resend sender to avoid delivery failures.

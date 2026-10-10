@@ -135,10 +135,43 @@
     </footer><script src="/assets/main.js" defer></script>
     <script>
       (function () {
-        var ref = new URLSearchParams(window.location.search).get("ref");
+        var params = new URLSearchParams(window.location.search);
+        var ref = params.get("ref");
+        var lang = params.get("lang");
+        var isZh = lang === "zh";
         if (ref && /^[A-Za-z0-9-]{1,64}$/.test(ref)) {
           var el = document.querySelector("[data-rfq-ref-suffix]");
-          if (el) el.textContent = " — reference " + ref;
+          if (el) el.textContent = isZh ? " — 参考编号 " + ref : " — reference " + ref;
+        }
+        if (isZh) {
+          document.documentElement.lang = "zh";
+          var eyebrow = document.querySelector(".page-hero .eyebrow");
+          if (eyebrow) eyebrow.textContent = "询价确认";
+          var h1 = document.querySelector(".page-hero h1");
+          if (h1) {
+            var refSpan = h1.querySelector("[data-rfq-ref-suffix]");
+            h1.innerHTML = "已收到您的询价" + (refSpan ? refSpan.outerHTML : "") + "。";
+          }
+          var lead = document.querySelector(".page-hero .lead");
+          if (lead) lead.innerHTML = "YUJI 裕吉生物将根据项目范围审核您的需求简报，并通过 <strong>info@yujihealth.com</strong> 回复。";
+          var nextStep = lead ? lead.nextElementSibling : null;
+          if (nextStep && nextStep.tagName === "P") {
+            nextStep.textContent = "后续步骤：样品与规格确认。在审核完成前，不承诺具体报价或交期。";
+          }
+          var actions = document.querySelector(".action-row");
+          if (actions) {
+            var btnPrimary = actions.querySelector(".button.primary");
+            if (btnPrimary) btnPrimary.textContent = "下载询价清单";
+            var btnSecondary = actions.querySelector(".button.secondary");
+            if (btnSecondary) {
+              btnSecondary.textContent = "返回产品中心";
+              btnSecondary.href = "/zh/products/";
+            }
+          }
+          var ctaNote = document.querySelector(".cta-note");
+          if (ctaNote) {
+            ctaNote.innerHTML = '如数个工作日内未收到回复，请发送邮件至 <a class="inline-link" href="mailto:info@yujihealth.com">info@yujihealth.com</a> 并附上您的参考编号。';
+          }
         }
       })();
     </script>
