@@ -45,6 +45,9 @@
 6. **结构化数据 `dateModified` 与中文联系页 Meta 对齐**：
    - 11 个核心/资源页 JSON-LD `dateModified` 统一同步为 `2026-10-08`，与 `sitemap.xml` 达成 100% 一致性；
    - 丰富 `zh/contact/index.html` 的 Meta Description，对齐完整 B2B 采购意图（产品规格、打样支持、私标包装、参考起订量及报价资料）。
+7. **中文页面图片 Alt 属性全量本地化与 CTA 埋点闭环**：
+   - 中文 4 大核心页（首页、产品、OEM、质量）遗留的英文图片 `alt` 文本全部重写为合规中文 B2B 采购关键词，消除语言混杂，提升图片搜索索引；
+   - `assets/main.js` 扩展支持 `a[href^="/zh/contact/"]`，确保中文站询价 CTA 点击准确触发转化追踪。
 
 ---
 
@@ -88,13 +91,14 @@
 
 ## 五、线上实测闭环回执
 
-- **部署 commits**：`7cde75d`, `fa0711e`, `78e9537`, `ae33364`, `13385e3`
+- **部署 commits**：`7cde75d`, `fa0711e`, `78e9537`, `ae33364`, `13385e3`, `e0e4ee0`
 - **实测验证**：
   - `https://yujihealth.com/sitemap.xml`：11 个目标页面的 `<lastmod>2026-10-08</lastmod>` 已全部生效；
   - `https://yujihealth.com/contact/success/`：包含 `YUJI 裕吉生物` 中文自适应逻辑已生效；
-  - `https://yujihealth.com/assets/main.js`：包含 `langPart` / `isZh` 语境传递逻辑已生效；
+  - `https://yujihealth.com/assets/main.js`：包含 `langPart` / `isZh` 语境传递逻辑与 `/zh/contact/` CTA 事件监听已生效；
   - `POST https://yujihealth.com/api/contact/`：空值测试正常返回 400，发件逻辑受控；
   - `https://yujihealth.com/zh/...`（5 核心页）：主行动号召按钮（CTA）、面包屑导航与互链全面实现 `/zh/` 闭环，消除回跳英文站缺陷，经实测全部通过（True）；
   - `https://yujihealth.com/...`（11 核心与资源页）：JSON-LD 结构化数据中的 `"dateModified": "2026-10-08"` 经线上实测全部通过（True）；
-  - `https://yujihealth.com/zh/contact/`：中文版 Meta Description / OG / Twitter 标签扩充上线，实测匹配成功（True）。
+  - `https://yujihealth.com/zh/contact/`：中文版 Meta Description / OG / Twitter 标签扩充上线，实测匹配成功（True）；
+  - `https://yujihealth.com/zh/...`（中文 4 核心页）：全站图片 `alt` 文本中文本地化已全部生效（True）。
 
