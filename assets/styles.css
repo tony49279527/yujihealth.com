@@ -40,6 +40,15 @@ body {
   line-height: 1.55;
 }
 
+:lang(zh) body,
+:lang(zh) input,
+:lang(zh) textarea,
+:lang(zh) select,
+:lang(zh) button {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
 body.nav-open {
   overflow: hidden;
 }

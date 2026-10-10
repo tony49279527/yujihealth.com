@@ -100,5 +100,6 @@
   - `https://yujihealth.com/zh/...`（5 核心页）：主行动号召按钮（CTA）、面包屑导航与互链全面实现 `/zh/` 闭环，消除回跳英文站缺陷，经实测全部通过（True）；
   - `https://yujihealth.com/...`（11 核心与资源页）：JSON-LD 结构化数据中的 `"dateModified": "2026-10-08"` 经线上实测全部通过（True）；
   - `https://yujihealth.com/zh/contact/`：中文版 Meta Description / OG / Twitter 标签扩充上线，实测匹配成功（True）；
-  - `https://yujihealth.com/zh/...`（中文 4 核心页）：全站图片 `alt` 文本中文本地化已全部生效（True）。
+  - `https://yujihealth.com/zh/...`（中文 4 核心页）：全站图片 `alt` 文本中文本地化已全部生效（True）；
+  - 全站 33 页面排版、标点多余空格（226 处）、中文表单占位符（8 处）、HTML实体 `&#x27;`、数学符号 `≠`、重复 H2 标题（3 处）、图片尺寸物理失真（2 处）、品牌规范全大写（53 处）及 CJK 字体栈完成全量深度修复。
 
