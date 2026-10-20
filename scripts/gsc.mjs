@@ -250,7 +250,8 @@ async function getAccessToken() {
     ["gcloud", ["auth", "print-access-token"]]
   ]) {
     try {
-      return execFileSync(command[0], command[1], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+      // gcloud is a .cmd shim on Windows, which execFileSync can only run through a shell.
+      return execFileSync(command[0], command[1], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], shell: process.platform === "win32" }).trim();
     } catch {}
   }
   throw new Error("No GSC credential found. Configure ADC, GSC_ACCESS_TOKEN, or GOOGLE_APPLICATION_CREDENTIALS.");
@@ -258,13 +259,15 @@ async function getAccessToken() {
 
 function getQuotaProject() {
   if (process.env.GOOGLE_CLOUD_QUOTA_PROJECT) return process.env.GOOGLE_CLOUD_QUOTA_PROJECT;
-  const adcPath = path.join(process.env.HOME || "", ".config/gcloud/application_default_credentials.json");
+  const adcPath = process.platform === "win32"
+    ? path.join(process.env.APPDATA || "", "gcloud", "application_default_credentials.json")
+    : path.join(process.env.HOME || "", ".config/gcloud/application_default_credentials.json");
   try {
     const adc = JSON.parse(fs.readFileSync(adcPath, "utf8"));
     if (adc.quota_project_id) return adc.quota_project_id;
   } catch {}
   try {
-    return execFileSync("gcloud", ["config", "get-value", "project"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+    return execFileSync("gcloud", ["config", "get-value", "project"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], shell: process.platform === "win32" }).trim();
   } catch {
     return "";
   }

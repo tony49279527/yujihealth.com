@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONFIG_PATH = path.join(ROOT, "config", "seo-targets.json");
+// Registered English name as used in docs/seo/authority-standard-data-pack-yuji-2026-08-21.md and directory profiles.
+const ORGANIZATION_NAME = "Xi'an Yuji Biotechnology Co., Ltd.";
 const errors = [];
 const warnings = [];
 
@@ -129,7 +131,8 @@ async function auditPage({ siteUrl, path: route, label }) {
   const expectedCanonical = `${siteUrl}${route}`;
 
   if (!title) fail(`${label}: missing title`);
-  if (title && title.length > 70) warn(`${label}: title is longer than 70 characters (${title.length})`);
+  if (title && title.replace(/&amp;/g, "&").length > 60) warn(`${label}: title is longer than 60 characters (${title.length})`);
+  if (description && description.length > 155) warn(`${label}: meta description is longer than 155 characters (${description.length})`);
   if (!description) fail(`${label}: missing meta description`);
   const minimumDescriptionLength = language?.toLowerCase().startsWith("zh") ? 20 : 50;
   if (description && description.length < minimumDescriptionLength) warn(`${label}: meta description is very short (${description.length})`);
@@ -151,17 +154,36 @@ async function auditPage({ siteUrl, path: route, label }) {
     if (targetFile && !(await exists(targetFile))) fail(`${label}: broken internal link ${href} (${targetFile} is missing)`);
   }
 
+  // OEM programs are quoted services; Product without offers/review/aggregateRating is invalid for Google.
   if (route.startsWith("/products/") && route !== "/products/") {
-    const product = schemaNodes(jsonLd).find((node) => hasSchemaType(node, "Product"));
-    if (!product) {
-      fail(`${label}: missing Product structured data`);
+    if (schemaNodes(jsonLd).some((node) => hasSchemaType(node, "Product"))) fail(`${label}: use Service, not Product, for OEM program pages`);
+    const service = schemaNodes(jsonLd).find((node) => hasSchemaType(node, "Service"));
+    if (!service) {
+      fail(`${label}: missing Service structured data`);
     } else {
-      for (const property of ["name", "description", "image", "url", "brand"]) {
-        if (!product[property]) fail(`${label}: Product structured data missing ${property}`);
+      for (const property of ["name", "description", "image", "url", "provider", "serviceType"]) {
+        if (!service[property]) fail(`${label}: Service structured data missing ${property}`);
       }
-      if (product?.brand?.name !== "YUJI") fail(`${label}: Product structured data must name the YUJI brand`);
-      if (product?.url !== expectedCanonical) fail(`${label}: Product structured data URL must match canonical`);
+      if (service?.provider?.["@id"] !== `${siteUrl}/#organization`) fail(`${label}: Service provider must reference the organization`);
+      if (service?.url !== expectedCanonical) fail(`${label}: Service structured data URL must match canonical`);
     }
+  }
+
+  // The visible review date and the schema date must describe the same edit.
+  const visibleReview = html.match(/Last reviewed: ([A-Z][a-z]+ \d{1,2}, \d{4})/);
+  if (visibleReview) {
+    const visibleIso = new Date(`${visibleReview[1]} UTC`).toISOString().slice(0, 10);
+    const modified = schemaNodes(jsonLd).filter((node) => node.dateModified).map((node) => node.dateModified);
+    if (modified.length && !modified.includes(visibleIso)) fail(`${label}: visible "Last reviewed" ${visibleIso} does not match dateModified ${modified.join(", ")}`);
+  }
+
+  // Stray spaces before punctuation, a recurring artifact of batch content rewrites.
+  const stray = html.match(/[A-Za-z0-9)%] [,.;:)](?=[\s"<])/g);
+  if (stray) fail(`${label}: ${stray.length} stray space(s) before punctuation, e.g. "${stray[0]}"`);
+
+  const organizationNames = new Set(schemaNodes(jsonLd).filter((node) => node["@id"] === `${siteUrl}/#organization` && node.name).map((node) => node.name));
+  for (const name of organizationNames) {
+    if (name !== ORGANIZATION_NAME) fail(`${label}: #organization name must be "${ORGANIZATION_NAME}", found "${name}"`);
   }
 }
 
@@ -180,8 +202,10 @@ async function auditLanguagePairs(siteUrl) {
       const alternates = getAlternateLinks(html);
       const english = alternates.find((entry) => entry.hreflang === "en")?.href;
       const chinese = alternates.find((entry) => entry.hreflang === "zh")?.href;
+      const fallback = alternates.find((entry) => entry.hreflang === "x-default")?.href;
       if (english !== `${siteUrl}${englishRoute}`) fail(`${route}: missing reciprocal English hreflang`);
       if (chinese !== `${siteUrl}${chineseRoute}`) fail(`${route}: missing reciprocal Chinese hreflang`);
+      if (fallback !== `${siteUrl}${englishRoute}`) fail(`${route}: x-default hreflang must point to ${siteUrl}${englishRoute}`);
     }
   }
 }
@@ -254,6 +278,26 @@ async function auditPublicEvidenceBoundaries(targets) {
     "S/M/L 尺寸",
     "S often targets lighter flow"
   ];
+  // Capability claims without an approved evidence record, and regulatory wording that overstates classification.
+  const unapprovedClaims = [
+    "医用硅胶",
+    "医疗级",
+    "灵活起订量",
+    "ISO 13485 质量标准",
+    "洁净车间",
+    "Class I menstrual devices",
+    "Class I devices",
+  ];
+  // Internal governance and search-engine-facing wording that does not belong in buyer copy.
+  const internalWording = [
+    "AI systems",
+    "AI/search systems",
+    "AI answers",
+    "recorded approval",
+    "before website use",
+    "misspelled",
+    "网站使用的已记录批准",
+  ];
 
   for (const file of publicFiles) {
     const content = await readText(file);
@@ -261,6 +305,13 @@ async function auditPublicEvidenceBoundaries(targets) {
       if (content.toLowerCase().includes(phrase.toLowerCase())) {
         fail(`${file}: contains an unapproved fixed public specification: ${phrase}`);
       }
+    }
+    for (const phrase of unapprovedClaims) {
+      if (content.includes(phrase)) fail(`${file}: contains an unapproved claim or overstated classification: ${phrase}`);
+    }
+    if (file === "llms.txt") continue;
+    for (const phrase of internalWording) {
+      if (content.includes(phrase)) fail(`${file}: contains internal or search-engine-facing wording: ${phrase}`);
     }
   }
 }

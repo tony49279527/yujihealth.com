@@ -1016,7 +1016,7 @@ details p {
 
 .footer-inner {
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) repeat(3, minmax(160px, 0.35fr));
+  grid-template-columns: minmax(240px, 1fr) repeat(4, minmax(150px, 0.35fr));
   gap: 34px;
   width: var(--wrap);
   margin: 0 auto;
